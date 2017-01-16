@@ -1,0 +1,200 @@
+package com.test.controller;
+
+import com.test.dao.UserDao;
+import com.test.model.BlogJson;
+import com.test.model.TableBlogEntity;
+
+import com.test.model.TableUserEntity;
+import com.test.repository.BlogRepository;
+import com.test.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.util.List;
+
+/**
+ * Created by egguncle on 17-1-11.
+ */
+
+@Controller
+public class MainController {
+
+    @Autowired
+    // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
+            BlogRepository blogRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(ModelMap modelMap) {
+        //查询表中所有记录
+        List<TableBlogEntity> blogList = blogRepository.findAll();
+        // 将所有记录传递给要返回的jsp页面，放在List当中
+        modelMap.addAttribute("blogList", blogList);
+
+        return "home";
+    }
+
+    @RequestMapping(value = "/jsps/test", method = RequestMethod.GET)
+    public String getBlogs(ModelMap modelMap) {
+        // 查询user表中所有记录
+        List<TableBlogEntity> blogList = blogRepository.findAll();
+//
+//        for (TableBlogEntity blog : blogList) {
+//            // userIdLIst.add(blog.getTableUserByUserId().getUserId());
+//            String name = "";
+//            if (blog.getTableUserByUserId() == null) {
+//
+//              TableUserEntity userEntity=  new TableUserEntity();
+//              userEntity.setUsername("未知");
+//              blog.setTableUserByUserId(userEntity);
+//            }
+//        }
+
+        // 将所有记录传递给要返回的jsp页面，放在userList当中
+        modelMap.addAttribute("blogList", blogList);
+        //   modelMap.addAttribute("userIdList",userIdLIst);
+
+        return "test";
+    }
+
+    @RequestMapping(value = "/jsps/edit_blog", method = RequestMethod.GET)
+    public String editBlogs(ModelMap modelMap) {
+        return "edit_blog";
+    }
+
+    @RequestMapping(value = "/add_blog", method = RequestMethod.POST)
+    public String addBlog(@ModelAttribute("my_blog") TableBlogEntity blogEntity, HttpSession session,
+                          ModelMap model) {
+
+        System.out.println("---------------------------------------");
+        System.out.println();
+        System.out.println(blogEntity.getBlogTitle());
+        System.out.println(blogEntity.getBlogContent());
+        System.out.println("---------------------------------------");
+        java.util.Date date = new java.util.Date();
+        Date sqlDate = new Date(date.getTime());
+        blogEntity.setBlogDate(sqlDate);
+
+        TableUserEntity userEntity = (TableUserEntity) session.getAttribute("user");
+        blogEntity.setTableUserByUserId(userEntity);
+        // 查询表中所有记录
+        //List<TableBlogEntity> blogList = blogRepository.findAll();
+//        long id = System.currentTimeMillis();
+//        blogEntity.setBlogId(id);
+        blogRepository.save(blogEntity);
+
+        //查询表中所有记录
+        List<TableBlogEntity> blogList = blogRepository.findAll();
+        // 将所有记录传递给要返回的jsp页面，放在List当中
+        model.addAttribute("blogList", blogList);
+        return "home";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/get_json", method = RequestMethod.GET)
+    public BlogJson getBlogJson() {
+        List<TableBlogEntity> blogList = blogRepository.findAll();
+        BlogJson blogJson = new BlogJson();
+        blogJson.setStatus("ok");
+        blogJson.setBlogEntityList(blogList);
+
+        return blogJson;
+    }
+
+    @RequestMapping(value = "/jsps/registered", method = RequestMethod.GET)
+    public String registered(ModelMap modelMap) {
+        return "registered";
+    }
+
+    @RequestMapping(value = "/add_user", method = RequestMethod.POST)
+    public String addUser(@ModelAttribute("my_user") TableUserEntity userEntity,
+                          ModelMap model) {
+        System.out.println("---------------------------------------");
+        System.out.println(userEntity.getUsername());
+        System.out.println(userEntity.getUserpasswd());
+        System.out.println("---------------------------------------");
+
+        // 查询表中所有记录
+        //List<TableBlogEntity> blogList = blogRepository.findAll();
+
+        userRepository.save(userEntity);
+
+        //查询表中所有记录
+        List<TableUserEntity> userList = userRepository.findAll();
+        // 将所有记录传递给要返回的jsp页面，放在List当中
+        model.addAttribute("userList", userList);
+        return "test";
+    }
+
+    @RequestMapping(value = "/registered", method = RequestMethod.GET)
+    public String registered() {
+        return "registered";
+    }
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(ModelMap modelMap) {
+        modelMap.addAttribute("login",true);
+        return "login";
+    }
+
+    @RequestMapping(value = "/login_user", method = RequestMethod.POST)
+    public String loginUser(@ModelAttribute("my_login") TableUserEntity userEntity,
+                            ModelMap model, HttpSession session) {
+        System.out.println("---------------------------------------");
+        System.out.println(userEntity.getUsername());
+        System.out.println(userEntity.getUserpasswd());
+        System.out.println("---------------------------------------");
+
+        UserDao userDao = new UserDao();
+        TableUserEntity tableUserEntity= userDao.login(userEntity.getUsername(),userEntity.getUserpasswd());
+
+        if (tableUserEntity!=null){
+            session.setAttribute("user",tableUserEntity);
+            //查询表中所有记录
+            List<TableBlogEntity> blogList = blogRepository.findAll();
+            // 将所有记录传递给要返回的jsp页面，放在List当中
+            model.addAttribute("blogList", blogList);
+
+            return "home";
+        }
+
+
+        
+        model.addAttribute("login",false);
+        return "login";
+    }
+
+    @RequestMapping(value = "/log_out")
+    public String logOut(HttpSession session,ModelMap model){
+        session.invalidate();
+        List<TableBlogEntity> blogList = blogRepository.findAll();
+        // 将所有记录传递给要返回的jsp页面，放在List当中
+        model.addAttribute("blogList", blogList);
+        return "home";
+    }
+
+    @RequestMapping(value = "/get_content/{blogId}")
+    public String getContent(@PathVariable("blogId") int blogId,ModelMap modelMap){
+        TableBlogEntity blogEntity=blogRepository.findOne(blogId);
+
+        System.out.println("----------------------------");
+        System.out.println(blogId);
+        System.out.println(blogEntity.getBlogTitle());
+        System.out.println("----------------------------");
+        modelMap.addAttribute("blog",blogEntity);
+        return "content";
+    }
+
+    @RequestMapping(value = "/myblog")
+    public String myBlog(ModelMap modelMap){
+        
+
+        return "myHome";
+    }
+}
+
