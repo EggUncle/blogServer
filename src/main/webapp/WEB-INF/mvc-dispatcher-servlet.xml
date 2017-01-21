@@ -14,6 +14,24 @@
     <!-- 开启注解 -->
     <mvc:annotation-driven/>
 
+    <!--<mvc:annotation-driven>-->
+        <!--<mvc:message-converters register-defaults="true">-->
+            <!--<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">-->
+                <!--<property name="supportedMediaTypes" value="application/json"/>-->
+                <!--&lt;!&ndash;设置fastjson特性&ndash;&gt;-->
+                <!--<property name="features">-->
+                    <!--<array>-->
+                        <!--&lt;!&ndash;设置null值也要输出，fastjson默认是关闭的&ndash;&gt;-->
+                        <!--<value>WriteMapNullValue</value>-->
+                        <!--&lt;!&ndash;设置使用文本方式输出日期，fastjson默认是long&ndash;&gt;-->
+                        <!--<value>WriteDateUseDateFormat</value>-->
+                    <!--</array>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
+
+
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -27,12 +45,12 @@
 
     <!--&lt;!&ndash; 链接到persistence.xml &ndash;&gt;-->
     <!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">-->
-        <!--<property name="persistenceUnitName" value="defaultPersistenceUnit"/>-->
+    <!--<property name="persistenceUnitName" value="defaultPersistenceUnit"/>-->
     <!--</bean>-->
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
-        <property name="packagesToScan" value="com.test.model" />
+        <property name="packagesToScan" value="com.test.model"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
@@ -54,7 +72,9 @@
                 <prop key="connection.is-connection-validation-required">true</prop>
 
                 <prop key="hibernate.c3p0.validate">true</prop>
-                <prop key="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</prop>
+                <prop key="hibernate.connection.provider_class">
+                    org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider
+                </prop>
                 <prop key="hibernate.c3p0.min_size">5</prop>
                 <prop key="hibernate.c3p0.max_size">600</prop>
                 <prop key="hibernate.c3p0.timeout">1800</prop>

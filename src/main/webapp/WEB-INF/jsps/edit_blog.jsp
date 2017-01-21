@@ -1,5 +1,5 @@
-<%@ page import="com.test.model.TableUserEntity" %>
-<%@ page import="com.test.model.TableBlogEntity" %>
+<%@ page import="com.test.model.UserEntity" %>
+<%@ page import="com.test.model.BlogEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
@@ -35,7 +35,7 @@
             </div>
             <form:form   method="POST" modelAttribute="my_blog" action="/add_blog">
                 <div class="form-group">
-                    <label name="userId"><%=((TableUserEntity)session.getAttribute("user")).getUserId()%></label>
+                    <label name="userId"><%=((UserEntity)session.getAttribute("user")).getUserId()%></label>
                 </div>
                 <div class="form-group">
                     <label for="blogTitle">title</label><input type="text" class="form-control" id="blogTitle"  name="blogTitle"/>

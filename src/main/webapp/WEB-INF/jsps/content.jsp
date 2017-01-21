@@ -1,4 +1,4 @@
-<%@ page import="com.test.model.TableBlogEntity" %><%--
+<%@ page import="com.test.model.BlogEntity" %><%--
   Created by IntelliJ IDEA.
   User: egguncle
   Date: 17-1-16
@@ -28,7 +28,7 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
             <%
-               TableBlogEntity blogEntity= (TableBlogEntity) request.getAttribute("blog");
+               BlogEntity blogEntity= (BlogEntity) request.getAttribute("blog");
             %>
 
             <div class="page-header">

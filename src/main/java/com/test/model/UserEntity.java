@@ -1,18 +1,16 @@
 package com.test.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
- * Created by egguncle on 17-1-16.
+ * Created by egguncle on 17-1-17.
  */
 @Entity
 @Table(name = "table_user", schema = "db_blog", catalog = "")
-public class TableUserEntity {
+public class UserEntity {
     private int userId;
     private String username;
     private String userpasswd;
-    private Collection<TableBlogEntity> tableBlogsByUserId;
 
     @Id
     @Column(name = "userId", nullable = false)
@@ -49,7 +47,7 @@ public class TableUserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TableUserEntity that = (TableUserEntity) o;
+        UserEntity that = (UserEntity) o;
 
         if (userId != that.userId) return false;
         if (username != null ? !username.equals(that.username) : that.username != null) return false;
@@ -64,14 +62,5 @@ public class TableUserEntity {
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (userpasswd != null ? userpasswd.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "tableUserByUserId")
-    public Collection<TableBlogEntity> getTableBlogsByUserId() {
-        return tableBlogsByUserId;
-    }
-
-    public void setTableBlogsByUserId(Collection<TableBlogEntity> tableBlogsByUserId) {
-        this.tableBlogsByUserId = tableBlogsByUserId;
     }
 }

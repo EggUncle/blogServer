@@ -4,18 +4,16 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by egguncle on 17-1-16.
+ * Created by egguncle on 17-1-17.
  */
 @Entity
 @Table(name = "table_blog", schema = "db_blog", catalog = "")
-public class TableBlogEntity {
+public class BlogEntity {
     private int blogId;
     private Date blogDate;
     private String blogTitle;
     private String blogContent;
-
-
-    private TableUserEntity tableUserByUserId;
+    private UserEntity tableUserByUserId;
 
     @Id
     @Column(name = "blogId", nullable = false)
@@ -57,22 +55,17 @@ public class TableBlogEntity {
         this.blogContent = blogContent;
     }
 
-
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TableBlogEntity that = (TableBlogEntity) o;
+        BlogEntity that = (BlogEntity) o;
 
         if (blogId != that.blogId) return false;
         if (blogDate != null ? !blogDate.equals(that.blogDate) : that.blogDate != null) return false;
         if (blogTitle != null ? !blogTitle.equals(that.blogTitle) : that.blogTitle != null) return false;
         if (blogContent != null ? !blogContent.equals(that.blogContent) : that.blogContent != null) return false;
-
 
         return true;
     }
@@ -83,17 +76,16 @@ public class TableBlogEntity {
         result = 31 * result + (blogDate != null ? blogDate.hashCode() : 0);
         result = 31 * result + (blogTitle != null ? blogTitle.hashCode() : 0);
         result = 31 * result + (blogContent != null ? blogContent.hashCode() : 0);
-
         return result;
     }
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId")
-    public TableUserEntity getTableUserByUserId() {
+    public UserEntity getTableUserByUserId() {
         return tableUserByUserId;
     }
 
-    public void setTableUserByUserId(TableUserEntity tableUserByUserId) {
+    public void setTableUserByUserId(UserEntity tableUserByUserId) {
         this.tableUserByUserId = tableUserByUserId;
     }
 }

@@ -1,4 +1,4 @@
-<%@ page import="com.test.model.TableBlogEntity" %>
+<%@ page import="com.test.model.BlogEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.*" %>
 <%--
@@ -39,23 +39,23 @@
                 </thead>
                 <tbody>
                 <%
-                    List<TableBlogEntity> blogList = (List<TableBlogEntity>) request.getAttribute("blogList");
+                    List<BlogEntity> blogList = (List<BlogEntity>) request.getAttribute("blogList");
 
                     if (blogList != null) {
-                        for (TableBlogEntity tableBlogEntity : blogList) {
+                        for (BlogEntity BlogEntity : blogList) {
                 %>
                 <tr>
                     <td>
-                        <%=tableBlogEntity.getBlogId()%>
+                        <%=BlogEntity.getBlogId()%>
                     </td>
                     <%--<td>--%>
-                        <%--<%=tableBlogEntity.getBlogAuthor()%>--%>
+                        <%--<%=BlogEntity.getBlogAuthor()%>--%>
                     <%--</td>--%>
                     <td>
-                        <%=tableBlogEntity.getBlogDate()%>
+                        <%=BlogEntity.getBlogDate()%>
                     </td>
                     <td>
-                        <%=tableBlogEntity.getBlogTitle()%>
+                        <%=BlogEntity.getBlogTitle()%>
                     </td>
                 </tr>
                 <%

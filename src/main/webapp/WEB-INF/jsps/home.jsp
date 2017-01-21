@@ -1,6 +1,6 @@
-<%@ page import="com.test.model.TableBlogEntity" %>
+<%@ page import="com.test.model.BlogEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.test.model.TableUserEntity" %><%--
+<%@ page import="com.test.model.UserEntity" %><%--
   Created by IntelliJ IDEA.
   User: egguncle
   Date: 17-1-11
@@ -42,7 +42,7 @@
             <%
             } else {
                 //已经登录
-                TableUserEntity user = (TableUserEntity) session.getAttribute("user");
+                UserEntity user = (UserEntity) session.getAttribute("user");
             %>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -55,7 +55,7 @@
                         <a href="/jsps/edit_blog">edit blog</a>
                     </li>
                     <li>
-                        <a href="/myblog">my blog</a>
+                        <a href="/myblog/<%=user.getUserId()%>">my blog</a>
                     </li>
                     <li class="divider">
                     </li>
@@ -98,31 +98,31 @@
                 </thead>
                 <tbody>
                 <%
-                    List<TableBlogEntity> blogList = (List<TableBlogEntity>) request.getAttribute("blogList");
+                    List<BlogEntity> blogList = (List<BlogEntity>) request.getAttribute("blogList");
                     if (blogList != null) {
-                        for (TableBlogEntity tableBlogEntity : blogList) {
+                        for (BlogEntity blogEntity : blogList) {
                 %>
                 <tr>
                     <td>
-                        <%=tableBlogEntity.getBlogId()%>
+                        <%=blogEntity.getBlogId()%>
                     </td>
                     <td>
                         <%
-                           if (tableBlogEntity.getTableUserByUserId()==null){
+                           if (blogEntity.getTableUserByUserId()==null){
                         %>
                         未知
                         <%
                            }else{
                         %>
-                        <%=tableBlogEntity.getTableUserByUserId().getUsername()%>
+                        <%=blogEntity.getTableUserByUserId().getUsername()%>
                         <%
                         }%>
                     </td>
                     <td>
-                        <%=tableBlogEntity.getBlogDate()%>
+                        <%=blogEntity.getBlogDate()%>
                     </td>
                     <td>
-                        <a href="/get_content/<%=tableBlogEntity.getBlogId()%>"><%=tableBlogEntity.getBlogTitle()%></a>
+                        <a href="/get_content/<%=blogEntity.getBlogId()%>"><%=blogEntity.getBlogTitle()%></a>
                     </td>
                 </tr>
                 <%

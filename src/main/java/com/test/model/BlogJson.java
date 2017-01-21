@@ -6,22 +6,22 @@ import java.util.List;
  * Created by egguncle on 17-1-13.
  */
 public class BlogJson {
-    private String status;
-    private List<TableBlogEntity> blogEntityList;
+    private Boolean error;
+    private List<BlogEntity> results;
 
-    public String getStatus() {
-        return status;
+    public Boolean getError() {
+        return error;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setError(Boolean error) {
+        this.error = error;
     }
 
-    public List<TableBlogEntity> getBlogEntityList() {
-        return blogEntityList;
+    public List<BlogEntity> getResults() {
+        return results;
     }
 
-    public void setBlogEntityList(List<TableBlogEntity> blogEntityList) {
-        this.blogEntityList = blogEntityList;
+    public void setResults(List<BlogEntity> results) {
+        this.results = results;
     }
 }

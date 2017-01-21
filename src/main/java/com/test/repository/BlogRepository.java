@@ -4,12 +4,12 @@ package com.test.repository;
  * Created by egguncle on 17-1-11.
  */
 
-import com.test.model.TableBlogEntity;
+import com.test.model.BlogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BlogRepository extends JpaRepository<TableBlogEntity, Integer> {
+public interface BlogRepository extends JpaRepository<BlogEntity, Integer> {
 //    List<TableBlogEntity> findAll();
 //    TableBlogEntity findById(int id);
 
