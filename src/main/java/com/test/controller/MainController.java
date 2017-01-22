@@ -27,7 +27,7 @@ public class MainController {
 
     @Autowired
     // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
-    BlogRepository blogRepository;
+            BlogRepository blogRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -35,13 +35,9 @@ public class MainController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(ModelMap modelMap) {
         //查询表中所有记录
-        List<BlogEntity> blogList = blogRepository.findAll();
+        List<BlogEntity> blogList = blogRepository.findBlogList();
         // 将所有记录传递给要返回的jsp页面，放在List当中
         modelMap.addAttribute("blogList", blogList);
-
-        UserEntity userEntity = userRepository.findUser(4);
-
-        System.out.println(userEntity.getUserId()+" "+userEntity.getUsername());
 
         return "home";
     }
@@ -102,23 +98,13 @@ public class MainController {
         return "home";
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/get_json", method = RequestMethod.GET)
-//    public BlogJson getBlogJson() {
-//        List<BlogEntity> blogList = blogRepository.findAll();
-//        BlogJson blogJson = new BlogJson();
-//        blogJson.setError(false);
-//        blogJson.setResults(blogList);
-//
-//
-//        //  String jsonStr = JSON.toJSONString(blogJson);
-//        return blogJson;
-//    }
 
-    @RequestMapping(value = "/jsps/registered", method = RequestMethod.GET)
-    public String registered(ModelMap modelMap) {
-        return "registered";
-    }
+//    @RequestMapping(value = "/jsps/registered", method = RequestMethod.GET)
+//    public String registered(ModelMap model) {
+//
+//        model.addAttribute("repeat",false);
+//        return "registered";
+//    }
 
     @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("my_user") UserEntity userEntity,
@@ -131,8 +117,15 @@ public class MainController {
         // 查询表中所有记录
         //List<TableBlogEntity> blogList = blogRepository.findAll();
 
-        userRepository.save(userEntity);
-
+        //判断用户提交的用户名是否重复
+        String userName = userEntity.getUsername();
+        List<UserEntity> user = userRepository.getUserByName(userName);
+        if (user==null||user.size()==0){
+            userRepository.save(userEntity);
+        }else{
+            model.addAttribute("repeat",true);
+            return "registered";
+        }
         //查询表中所有记录
         List<UserEntity> userList = userRepository.findAll();
         // 将所有记录传递给要返回的jsp页面，放在List当中
@@ -141,7 +134,9 @@ public class MainController {
     }
 
     @RequestMapping(value = "/registered", method = RequestMethod.GET)
-    public String registered() {
+    public String registered(ModelMap model) {
+
+        model.addAttribute("repeat",false);
         return "registered";
     }
 
@@ -162,10 +157,10 @@ public class MainController {
 //        UserDao userDao = new UserDao();
 //        UserEntity tableUserEntity = userDao.login(userEntity.getUsername(), userEntity.getUserpasswd());
 
-        String userName=userEntity.getUsername();
-        String passwd=userEntity.getUserpasswd();
+        String userName = userEntity.getUsername();
+        String passwd = userEntity.getUserpasswd();
         //查询是否有对应用户名密码的用户
-        UserEntity user=userRepository.login(userName,passwd);
+        UserEntity user = userRepository.login(userName, passwd);
 
         if (user != null) {
             session.setAttribute("user", user);
@@ -206,7 +201,7 @@ public class MainController {
     @RequestMapping(value = "/myblog/{userId}")
     public String myBlog(@PathVariable("userId") int userId, ModelMap modelMap) {
 
-        List<BlogEntity> listBlog=blogRepository.getBlogListByUserId(userId);
+        List<BlogEntity> listBlog = blogRepository.getBlogListByUserId(userId);
         modelMap.addAttribute("blogList", listBlog);
         return "myHome";
     }

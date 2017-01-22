@@ -10,13 +10,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by egguncle on 17-1-14.
- *
+ * <p>
  * 用户数据库相关接口
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+
+    /**
+     * 查询出的list需要进行相应转置来更加符合正常的阅读习惯（新的在前面，旧的在后面）
+     *
+     * @return
+     */
+    @Override
+    @Query(value = "select * from table_user ORDER BY userId DESC ",nativeQuery = true)
+    List<UserEntity> findAll();
 
     /**
      * 使用id获取对应用户数据
@@ -28,15 +39,24 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findUser(int id);
 
     /**
-     *
      * 输入用户名密码进行登录
+     *
      * @param userName
      * @param passwd
      * @return
      */
     @Query(value = "select * from table_user where username=?1 and userpasswd=?2", nativeQuery = true)
-    UserEntity login(String userName,String passwd);
+    UserEntity login(String userName, String passwd);
 
 
+    /**
+     * 输入用户名获取用户对象，用来在注册的时候判断用户名是否重复
+     * 这里使用list而不是单个对象返回是因为避免在测试时注册过两个一样的用户名，从而返回集合而不是单个对象
+     *
+     * @param userName
+     * @return
+     */
+    @Query(value = "select * from table_user where  username=?1", nativeQuery = true)
+    List<UserEntity> getUserByName(String userName);
 
 }

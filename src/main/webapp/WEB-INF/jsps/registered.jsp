@@ -49,6 +49,16 @@
                         <button type="submit" class="btn btn-default">Registered</button>
                     </div>
                 </div>
+
+                <%
+                    if ((boolean)request.getAttribute("repeat")){
+                %>
+                <div class="alert alert-danger">
+                    <a href="#" class="alert-link">用户名已存在</a>
+                </div>
+                <%
+                    }
+                %>
             </form:form>
         </div>
     </div>
