@@ -10,44 +10,49 @@
     <schema id="4" parent="1" name="mysql"/>
     <schema id="5" parent="1" name="performance_schema"/>
     <schema id="6" parent="1" name="sys"/>
-    <table id="7" parent="2" name="table_blog"/>
-    <table id="8" parent="2" name="table_user"/>
-    <column id="9" parent="7" name="blogId">
+    <table id="7" parent="2" name="hibernate_sequence"/>
+    <table id="8" parent="2" name="table_blog"/>
+    <table id="9" parent="2" name="table_user"/>
+    <column id="10" parent="7" name="next_val">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="11" parent="8" name="blogId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="10" parent="7" name="blogDate">
+    <column id="12" parent="8" name="blogDate">
       <Position>2</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="11" parent="7" name="blogTitle">
+    <column id="13" parent="8" name="blogTitle">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="12" parent="7" name="blogContent">
+    <column id="14" parent="8" name="blogContent">
       <Position>4</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="13" parent="7" name="userId">
+    <column id="15" parent="8" name="userId">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="14" parent="7" name="userId_idx">
+    <index id="16" parent="8" name="userId_idx">
       <ColNames>userId</ColNames>
     </index>
-    <key id="15" parent="7" name="PRIMARY">
+    <key id="17" parent="8" name="PRIMARY">
       <ColNames>blogId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="16" parent="7" name="FKikga6ujqd4yst137sicmkvxyv">
+    <foreign-key id="18" parent="8" name="FKikga6ujqd4yst137sicmkvxyv">
       <ColNames>userId</ColNames>
       <RefSchemaName>db_blog</RefSchemaName>
       <RefTableName>table_user</RefTableName>
       <RefColNames>userId</RefColNames>
     </foreign-key>
-    <foreign-key id="17" parent="7" name="userId">
+    <foreign-key id="19" parent="8" name="userId">
       <ColNames>userId</ColNames>
       <RefSchemaName>db_blog</RefSchemaName>
       <RefTableName>table_user</RefTableName>
@@ -55,23 +60,23 @@
       <OnUpdate>no-action</OnUpdate>
       <OnDelete>no-action</OnDelete>
     </foreign-key>
-    <column id="18" parent="8" name="userId">
+    <column id="20" parent="9" name="userId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="19" parent="8" name="username">
+    <column id="21" parent="9" name="username">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="20" parent="8" name="userpasswd">
+    <column id="22" parent="9" name="userpasswd">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="21" parent="8" name="PRIMARY">
+    <key id="23" parent="9" name="PRIMARY">
       <ColNames>userId</ColNames>
       <Primary>1</Primary>
     </key>

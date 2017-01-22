@@ -13,6 +13,7 @@ public class UserEntity {
     private String userpasswd;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userId", nullable = false)
     public int getUserId() {
         return userId;

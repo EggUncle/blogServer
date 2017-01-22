@@ -1,10 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--xmlns:context="http://www.springframework.org/schema/context"-->
+<!--xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"-->
+<!--xmlns:tx="http://www.springframework.org/schema/tx"-->
+<!--xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">-->
+<!--&lt;!&ndash;指明 controller 所在包，并扫描其中的注解&ndash;&gt;-->
+<!--<context:component-scan base-package="com.test.controller"/>-->
+
+<!--&lt;!&ndash; 静态资源(js、image等)的访问 &ndash;&gt;-->
+<!--<mvc:default-servlet-handler/>-->
+
+<!--&lt;!&ndash; 开启注解 &ndash;&gt;-->
+<!--<mvc:annotation-driven/>-->
+
+<!--&lt;!&ndash;<mvc:annotation-driven>&ndash;&gt;-->
+<!--&lt;!&ndash;<mvc:message-converters register-defaults="true">&ndash;&gt;-->
+<!--&lt;!&ndash;<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="supportedMediaTypes" value="application/json"/>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;设置fastjson特性&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="features">&ndash;&gt;-->
+<!--&lt;!&ndash;<array>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;设置null值也要输出，fastjson默认是关闭的&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<value>WriteMapNullValue</value>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;设置使用文本方式输出日期，fastjson默认是long&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<value>WriteDateUseDateFormat</value>&ndash;&gt;-->
+<!--&lt;!&ndash;</array>&ndash;&gt;-->
+<!--&lt;!&ndash;</property>&ndash;&gt;-->
+<!--&lt;!&ndash;</bean>&ndash;&gt;-->
+<!--&lt;!&ndash;</mvc:message-converters>&ndash;&gt;-->
+<!--&lt;!&ndash;</mvc:annotation-driven>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;ViewResolver 视图解析器&ndash;&gt;-->
+<!--&lt;!&ndash;用于支持Servlet、JSP视图解析&ndash;&gt;-->
+<!--<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+<!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+<!--<property name="prefix" value="/WEB-INF/jsps/"/>-->
+<!--<property name="suffix" value=".jsp"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash; 表示JPA Repository所在的包 &ndash;&gt;-->
+<!--<jpa:repositories base-package="com.test.repository"/>-->
+
+<!--&lt;!&ndash; 链接到persistence.xml &ndash;&gt;-->
+<!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">-->
+<!--<property name="persistenceUnitName" value="defaultPersistenceUnit"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash;<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="persistenceUnitName" value="defaultPersistenceUnit"/>&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="packagesToScan" value="com.test.model"/>&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="jpaVendorAdapter">&ndash;&gt;-->
+<!--&lt;!&ndash;<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>&ndash;&gt;-->
+<!--&lt;!&ndash;</property>&ndash;&gt;-->
+<!--&lt;!&ndash;<property name="jpaProperties">&ndash;&gt;-->
+<!--&lt;!&ndash;<props>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/db_blog?useSSL=false</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.username">root</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.password">unicorn</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.show_sql">false</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.useUnicode">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.characterEncoding">UTF-8</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.format_sql">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.use_sql_comments">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.hbm2ddl.auto">update</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.autoReconnect">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="connection.autoReconnectForPools">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="connection.is-connection-validation-required">true</prop>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.validate">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.connection.provider_class">&ndash;&gt;-->
+<!--&lt;!&ndash;org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider&ndash;&gt;-->
+<!--&lt;!&ndash;</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.min_size">5</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.max_size">600</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.timeout">1800</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.max_statements">50</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.preferredTestQuery">SELECT 1;</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.testConnectionOnCheckout">true</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;<prop key="hibernate.c3p0.idle_test_period">3000</prop>&ndash;&gt;-->
+<!--&lt;!&ndash;</props>&ndash;&gt;-->
+<!--&lt;!&ndash;</property>&ndash;&gt;-->
+<!--&lt;!&ndash;</bean>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash; 事务管理 &ndash;&gt;-->
+<!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
+<!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+<!--</bean>-->
+
+<!--&lt;!&ndash; 开启事务管理注解 &ndash;&gt;-->
+<!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+<!--</beans>-->
+
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
     <!--指明 controller 所在包，并扫描其中的注解-->
     <context:component-scan base-package="com.test.controller"/>
 
@@ -13,24 +117,6 @@
 
     <!-- 开启注解 -->
     <mvc:annotation-driven/>
-
-    <!--<mvc:annotation-driven>-->
-        <!--<mvc:message-converters register-defaults="true">-->
-            <!--<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">-->
-                <!--<property name="supportedMediaTypes" value="application/json"/>-->
-                <!--&lt;!&ndash;设置fastjson特性&ndash;&gt;-->
-                <!--<property name="features">-->
-                    <!--<array>-->
-                        <!--&lt;!&ndash;设置null值也要输出，fastjson默认是关闭的&ndash;&gt;-->
-                        <!--<value>WriteMapNullValue</value>-->
-                        <!--&lt;!&ndash;设置使用文本方式输出日期，fastjson默认是long&ndash;&gt;-->
-                        <!--<value>WriteDateUseDateFormat</value>-->
-                    <!--</array>-->
-                <!--</property>-->
-            <!--</bean>-->
-        <!--</mvc:message-converters>-->
-    <!--</mvc:annotation-driven>-->
-
 
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->
@@ -43,49 +129,10 @@
     <!-- 表示JPA Repository所在的包 -->
     <jpa:repositories base-package="com.test.repository"/>
 
-    <!--&lt;!&ndash; 链接到persistence.xml &ndash;&gt;-->
-    <!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">-->
-    <!--<property name="persistenceUnitName" value="defaultPersistenceUnit"/>-->
-    <!--</bean>-->
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <!-- 链接到persistence.xml -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
-        <property name="packagesToScan" value="com.test.model"/>
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
-        </property>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/db_blog?useSSL=false</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">unicorn</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.connection.useUnicode">true</prop>
-                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.use_sql_comments">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.connection.autoReconnect">true</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="connection.autoReconnectForPools">true</prop>
-                <prop key="connection.is-connection-validation-required">true</prop>
-
-                <prop key="hibernate.c3p0.validate">true</prop>
-                <prop key="hibernate.connection.provider_class">
-                    org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider
-                </prop>
-                <prop key="hibernate.c3p0.min_size">5</prop>
-                <prop key="hibernate.c3p0.max_size">600</prop>
-                <prop key="hibernate.c3p0.timeout">1800</prop>
-                <prop key="hibernate.c3p0.max_statements">50</prop>
-                <prop key="hibernate.c3p0.preferredTestQuery">SELECT 1;</prop>
-                <prop key="hibernate.c3p0.testConnectionOnCheckout">true</prop>
-                <prop key="hibernate.c3p0.idle_test_period">3000</prop>
-            </props>
-        </property>
     </bean>
-
 
     <!-- 事务管理 -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

@@ -39,6 +39,10 @@ public class MainController {
         // 将所有记录传递给要返回的jsp页面，放在List当中
         modelMap.addAttribute("blogList", blogList);
 
+        UserEntity userEntity = userRepository.findUser(4);
+
+        System.out.println(userEntity.getUserId()+" "+userEntity.getUsername());
+
         return "home";
     }
 
@@ -155,11 +159,16 @@ public class MainController {
         System.out.println(userEntity.getUserpasswd());
         System.out.println("---------------------------------------");
 
-        UserDao userDao = new UserDao();
-        UserEntity tableUserEntity = userDao.login(userEntity.getUsername(), userEntity.getUserpasswd());
+//        UserDao userDao = new UserDao();
+//        UserEntity tableUserEntity = userDao.login(userEntity.getUsername(), userEntity.getUserpasswd());
 
-        if (tableUserEntity != null) {
-            session.setAttribute("user", tableUserEntity);
+        String userName=userEntity.getUsername();
+        String passwd=userEntity.getUserpasswd();
+        //查询是否有对应用户名密码的用户
+        UserEntity user=userRepository.login(userName,passwd);
+
+        if (user != null) {
+            session.setAttribute("user", user);
             //查询表中所有记录
             List<BlogEntity> blogList = blogRepository.findAll();
             // 将所有记录传递给要返回的jsp页面，放在List当中
@@ -196,10 +205,9 @@ public class MainController {
 
     @RequestMapping(value = "/myblog/{userId}")
     public String myBlog(@PathVariable("userId") int userId, ModelMap modelMap) {
-        BlogDao blogDao = new BlogDao();
-        modelMap.addAttribute("blogList", blogDao.getBlogListByUserId(userId));
 
-
+        List<BlogEntity> listBlog=blogRepository.getBlogListByUserId(userId);
+        modelMap.addAttribute("blogList", listBlog);
         return "myHome";
     }
 }

@@ -61,15 +61,20 @@ public class JsonController {
         LoginJson loginJson = new LoginJson();
         loginJson.setError(false);
 
-        UserDao userDao = new UserDao();
-        UserEntity userEntity = userDao.login(userName, passwd);
-        if (userEntity != null) {
+//        UserDao userDao = new UserDao();
+//        UserEntity userEntity = userDao.login(userName, passwd);
+//        String username=userEntity.getUsername();
+//        String passwd=userEntity.getUserpasswd();
+        //查询是否有对应用户名密码的用户
+        UserEntity user = userRepository.login(userName, passwd);
+
+        if (user != null) {
             System.out.println("success");
             loginJson.setUserName(userName);
-            loginJson.setUserId(userEntity.getUserId());
+            loginJson.setUserId(user.getUserId());
             loginJson.setSuccess(true);
             return loginJson;
-        }else{
+        } else {
             System.out.println("failed");
             loginJson.setUserName("");
             loginJson.setSuccess(false);
@@ -79,19 +84,22 @@ public class JsonController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/client/submit_blog",method = RequestMethod.POST)
-    public String login(@RequestParam("userId") int userId,@RequestParam("title") String title,@RequestParam("content") String content){
+    @RequestMapping(value = "/client/submit_blog", method = RequestMethod.POST)
+    public String login(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content) {
         java.util.Date date = new java.util.Date();
         Date sqlDate = new Date(date.getTime());
-        BlogEntity blogEntity=new BlogEntity();
+        BlogEntity blogEntity = new BlogEntity();
         blogEntity.setBlogDate(sqlDate);
         blogEntity.setBlogTitle(title);
         blogEntity.setBlogContent(content);
 
-        UserDao userDao=new UserDao();
+//        UserDao userDao=new UserDao();
+//
+//        UserEntity userEntity=userDao.getUserById(userId);
 
-        UserEntity userEntity=userDao.getUserById(userId);
-        blogEntity.setTableUserByUserId(userEntity);
+        UserEntity user = userRepository.getOne(userId);
+
+        blogEntity.setTableUserByUserId(user);
 
         blogRepository.save(blogEntity);
 
