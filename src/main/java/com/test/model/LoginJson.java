@@ -12,6 +12,10 @@ public class LoginJson {
     //用户名
     private String userName;
 
+    //用户ID
+    private int userId;
+
+
     //是否成功
     private boolean success;
 
@@ -40,5 +44,12 @@ public class LoginJson {
         this.success = success;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -65,6 +66,7 @@ public class JsonController {
         if (userEntity != null) {
             System.out.println("success");
             loginJson.setUserName(userName);
+            loginJson.setUserId(userEntity.getUserId());
             loginJson.setSuccess(true);
             return loginJson;
         }else{
@@ -74,5 +76,25 @@ public class JsonController {
             return loginJson;
         }
 
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/client/submit_blog",method = RequestMethod.POST)
+    public String login(@RequestParam("userId") int userId,@RequestParam("title") String title,@RequestParam("content") String content){
+        java.util.Date date = new java.util.Date();
+        Date sqlDate = new Date(date.getTime());
+        BlogEntity blogEntity=new BlogEntity();
+        blogEntity.setBlogDate(sqlDate);
+        blogEntity.setBlogTitle(title);
+        blogEntity.setBlogContent(content);
+
+        UserDao userDao=new UserDao();
+
+        UserEntity userEntity=userDao.getUserById(userId);
+        blogEntity.setTableUserByUserId(userEntity);
+
+        blogRepository.save(blogEntity);
+
+        return "success";
     }
 }
