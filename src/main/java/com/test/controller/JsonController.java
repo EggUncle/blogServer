@@ -10,10 +10,7 @@ import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
@@ -36,18 +33,7 @@ public class JsonController {
     UserRepository userRepository;
 
 
-    @ResponseBody
-    @RequestMapping(value = "/json/blog", method = RequestMethod.GET)
-    public BlogJson getBlogJson() {
-        List<BlogEntity> blogList = blogRepository.findAll();
-        BlogJson blogJson = new BlogJson();
-        blogJson.setError(false);
-        blogJson.setResults(blogList);
 
-
-        //  String jsonStr = JSON.toJSONString(blogJson);
-        return blogJson;
-    }
 
     @ResponseBody
     @RequestMapping(value = "/json/client_login", method = RequestMethod.POST)
@@ -83,26 +69,4 @@ public class JsonController {
 
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/client/submit_blog", method = RequestMethod.POST)
-    public String login(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content) {
-        java.util.Date date = new java.util.Date();
-        Date sqlDate = new Date(date.getTime());
-        BlogEntity blogEntity = new BlogEntity();
-        blogEntity.setBlogDate(sqlDate);
-        blogEntity.setBlogTitle(title);
-        blogEntity.setBlogContent(content);
-
-//        UserDao userDao=new UserDao();
-//
-//        UserEntity userEntity=userDao.getUserById(userId);
-
-        UserEntity user = userRepository.getOne(userId);
-
-        blogEntity.setTableUserByUserId(user);
-
-        blogRepository.save(blogEntity);
-
-        return "success";
-    }
 }

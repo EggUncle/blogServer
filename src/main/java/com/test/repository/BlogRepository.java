@@ -70,5 +70,33 @@ public interface BlogRepository extends JpaRepository<BlogEntity, Integer> {
     List<BlogEntity> getBlogListMin(int blogId);
 
 
+
+    /**
+     * 获取对应用户的博客数据
+     * 获取blogid比输入ID大的博客（不包括这个ID自己）
+     * 用于请求时避免出现重复内容，节省流量
+     *
+     * @param blogId
+     * @param userId
+     * @return
+     */
+    @Query(value = "select * from table_blog where blogId>?1 and userId=?2 ORDER BY blogId DESC limit 20", nativeQuery = true)
+    List<BlogEntity> getBlogListMaxWithUser(int blogId,int userId);
+
+
+    /**
+     * 获取对应用户的博客数据
+     * 获取blogid比输入ID小的博客（不包括这个ID自己）
+     * 用于请求时避免出现重复内容，节省流量
+     *
+     * @param blogId
+     * @param userId
+     * @return
+     */
+    @Query(value = "select * from table_blog where blogId<?1 and userId=?2 ORDER BY blogId DESC limit 20", nativeQuery = true)
+    List<BlogEntity> getBlogListMinWithUser(int blogId,int userId);
+
+
+
 }
 
