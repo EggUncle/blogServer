@@ -9,6 +9,8 @@ import java.security.MessageDigest;
 
 /**
  * 对密码进行加密和验证的类
+ *
+ * MD5 相关
  */
 public class CipherUtil {
 

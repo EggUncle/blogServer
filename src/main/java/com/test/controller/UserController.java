@@ -7,6 +7,7 @@ import com.test.model.LoginJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
+import com.test.util.CipherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,8 +58,13 @@ public class UserController {
         //获取提交表单的用户和你妈的数据
         String userName = userEntity.getUsername();
         String passwd = userEntity.getUserpasswd();
+        //将输入的密码进行MD5加密，再与数据库里的MD5值比对
+        //进行MD5加密
+        CipherUtil cipherUtil = new CipherUtil();
+        String passwdByMD5 = cipherUtil.generatePassword(passwd);
+
         //查询是否有对应用户名密码的用户
-        UserEntity user = userRepository.login(userName, passwd);
+        UserEntity user = userRepository.login(userName, passwdByMD5);
 
         //如果用户存在，跳转到首页，并表示为登录状态
         if (user != null) {
@@ -78,6 +84,7 @@ public class UserController {
 
     /**
      * 用于跳转到注册界面
+     *
      * @param model
      * @return
      */
@@ -89,6 +96,7 @@ public class UserController {
 
     /**
      * 用于跳转到登录界面
+     *
      * @param modelMap
      * @return
      */
@@ -116,6 +124,13 @@ public class UserController {
         String userName = userEntity.getUsername();
         List<UserEntity> user = userRepository.getUserByName(userName);
         if (user == null || user.size() == 0) {
+            //获取提交来的用户实体类的密码
+            String inputPassWd = userEntity.getUserpasswd();
+            //进行MD5加密
+            CipherUtil cipherUtil = new CipherUtil();
+            String passwdByMD5 = cipherUtil.generatePassword(inputPassWd);
+            //将用户实体类的密码设置为加密好的MD5值
+            userEntity.setUserpasswd(passwdByMD5);
             userRepository.save(userEntity);
         } else {
             model.addAttribute("repeat", true);

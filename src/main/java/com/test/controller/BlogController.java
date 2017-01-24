@@ -5,6 +5,7 @@ import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import java.util.List;
  *
  * 用于网页部分与blog相关的controller
  */
+@Controller
 public class BlogController {
     // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
     @Autowired

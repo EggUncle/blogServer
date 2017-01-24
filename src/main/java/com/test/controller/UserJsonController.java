@@ -28,6 +28,12 @@ public class UserJsonController {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * 客户端进行登录的类
+     * @param userName
+     * @param passwd   此处的密码是在客户端经过MD5加密的值
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/json/client_login", method = RequestMethod.POST)
     public LoginJson login(@RequestParam("userName") String userName, @RequestParam("passwd") String passwd) {
@@ -36,10 +42,9 @@ public class UserJsonController {
         System.out.println("---------------------------");
         System.out.println(userName + "        " + passwd);
         System.out.println("---------------------------");
+
         LoginJson loginJson = new LoginJson();
         loginJson.setError(false);
-
-
         UserEntity user = userRepository.login(userName, passwd);
 
         if (user != null) {
