@@ -38,7 +38,7 @@ public class BlogJsonController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/client/submit_blog", method = RequestMethod.POST)
+    @RequestMapping(value = "/json/submit_blog", method = RequestMethod.POST)
     public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content) {
 
         //获取当前时间
@@ -60,41 +60,6 @@ public class BlogJsonController {
 
         return "success";
     }
-
-//    /**
-//     * 获取博客的方法（默认）
-//     *
-//     * @return
-//     */
-//    @ResponseBody
-//    @RequestMapping(value = "/json/blog", method = RequestMethod.GET)
-//    public BlogJson getBlogJson() {
-//        //获取20条最新的博客数据
-//        List<BlogEntity> blogList = blogRepository.findBlogList();
-//        BlogJson blogJson = new BlogJson();
-//        blogJson.setError(false);
-//        blogJson.setResults(blogList);
-//
-//        return blogJson;
-//    }
-//
-//    /**
-//     * 获取更大的博客数据的方法
-//     * @param blogId
-//     * @return
-//     */
-//    @ResponseBody
-//    @RequestMapping(value = "/json/blog_max/{blogId}", method = RequestMethod.GET)
-//    public BlogJson getBlogJsonMax(@PathVariable("blogId") int blogId) {
-//        //获取20条比当前ID大的博客数据
-//        List<BlogEntity> blogList = blogRepository.getBlogListMax(blogId);
-//        BlogJson blogJson = new BlogJson();
-//        blogJson.setError(false);
-//        blogJson.setResults(blogList);
-//
-//        return blogJson;
-//    }
-
 
     /**
      * 获取博客（20条）

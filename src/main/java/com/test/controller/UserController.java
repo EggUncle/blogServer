@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * Created by egguncle on 17-1-20.
  * <p>
- * json相关的controller
+ * 用户相关的controller
  */
 
 @Controller
-public class JsonController {
+public class UserController {
 
     // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
     @Autowired

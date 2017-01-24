@@ -1,5 +1,9 @@
 package com.test.model;
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -10,6 +14,8 @@ import javax.persistence.*;
 public class UserEntity {
     private int userId;
     private String username;
+
+    @JsonIgnore
     private String userpasswd;
 
     @Id
