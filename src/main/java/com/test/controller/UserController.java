@@ -118,59 +118,93 @@ public class UserController {
      */
     @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("my_user") UserEntity userEntity,
-                          ModelMap model, HttpServletRequest request) {
+                          ModelMap model, HttpServletRequest request, @RequestParam(value = "iconFile", required = false) MultipartFile iconFile, @RequestParam(value = "bgFile", required = false) MultipartFile bgFile) {
         System.out.println("-----------------------------");
-        System.out.println(userEntity.getBgPath());
-        System.out.println(userEntity.getIconPath());
-        System.out.println(userEntity.getIconFile().getName());
-        String name = userEntity.getIconFile().getName();
-        String type = name.substring(name.indexOf("."), name.length());
-        System.out.println(type);
-        System.out.println(request.getSession().getServletContext().getRealPath(""));
+//        System.out.println(userEntity.getBgPath());
+//        System.out.println(userEntity.getIconPath());
+//        System.out.println(userEntity.getIconFile().getName());
+//        String name = userEntity.getIconFile().getName();
+//        String type = name.substring(name.indexOf("."), name.length());
+//        System.out.println(type);
+//        System.out.println(request.getSession().getServletContext().getRealPath(""));
         System.out.println("-----------------------------");
 
-//        File file = userEntity.getIconFile();
-//
-//
-//        String path = request.getSession().getServletContext().getRealPath("") + "static/images/" + name;
-//        try {
-//            File imageFile = new File(path);
-//            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-//
-//            objectOutputStream.writeObject(file);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         // 查询表中所有记录
         //List<TableBlogEntity> blogList = blogRepository.findAll();
 
-        return "registered";
+        //   return "registered";
         //判断用户提交的用户名是否重复
-//        String userName = userEntity.getUsername();
-//        List<UserEntity> user = userRepository.getUserByName(userName);
-//        if (user == null || user.size() == 0) {
-//            //获取提交来的用户实体类的密码
-//            String inputPassWd = userEntity.getUserpasswd();
-//            //进行MD5加密
-//            CipherUtil cipherUtil = new CipherUtil();
-//            String passwdByMD5 = cipherUtil.generatePassword(inputPassWd);
-//            //将用户实体类的密码设置为加密好的MD5值
-//            userEntity.setUserpasswd(passwdByMD5);
-//            userRepository.save(userEntity);
-//        } else {
-//            model.addAttribute("repeat", true);
-//            return "registered";
-//        }
-//        //查询表中所有记录
-//        List<UserEntity> userList = userRepository.findAll();
-//        // 将所有记录传递给要返回的jsp页面，放在List当中
-//        model.addAttribute("userList", userList);
-//        return "test";
+        String userName = userEntity.getUsername();
+        List<UserEntity> user = userRepository.getUserByName(userName);
+
+        if (user == null || user.size() == 0) {
+            //获取用户昵称
+            String nickName= userEntity.getNickname();
+            userEntity.setNickname(nickName);
+
+            //获取提交来的用户实体类的密码
+            String inputPassWd = userEntity.getUserpasswd();
+            //进行MD5加密
+            CipherUtil cipherUtil = new CipherUtil();
+            String passwdByMD5 = cipherUtil.generatePassword(inputPassWd);
+            //将用户实体类的密码设置为加密好的MD5值
+            userEntity.setUserpasswd(passwdByMD5);
+
+            //获得物理路径webapp所在路径
+            String pathRoot = request.getSession().getServletContext().getRealPath("");
+            //保存头像和背景图片，并且返回路径
+            String iconPath = saveFile(iconFile, pathRoot,"icon");
+            String bgPath = saveFile(bgFile, pathRoot,"bg");
+            userEntity.setIconPath(iconPath);
+            userEntity.setBgPath(bgPath);
+            userRepository.save(userEntity);
+        } else {
+            model.addAttribute("repeat", true);
+            return "registered";
+        }
+        //查询表中所有记录
+        List<UserEntity> userList = userRepository.findAll();
+        // 将所有记录传递给要返回的jsp页面，放在List当中
+        model.addAttribute("userList", userList);
+        return "test";
     }
+
+    /**
+     * 保存文件的方法 用于保存用户上传的头像和背景图
+     *
+     *
+     * @param file
+     * @param pathRoot 物理路径webapp所在路径
+     * @param type 类型：icon or bg
+     * @return 保存的文件的路径
+     */
+    private String saveFile(MultipartFile file, String pathRoot,String type) {
+
+        String path = "";
+        //保存用户头像文件
+        if (!file.isEmpty()) {
+            //生成uuid作为文件名称
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            //获得文件类型（可以判断如果不是图片，禁止上传）
+            String contentType = file.getContentType();
+            //获得文件后缀名称
+            String imageName = contentType.substring(contentType.indexOf("/") + 1);
+            path = "/static/images/"+type +"/" + uuid + "." + imageName;
+
+            try {
+                file.transferTo(new File(pathRoot + path));
+                //将图片路径设置给user实例
+                // userEntity.setIconPath(iconPath);
+                System.out.println(path);
+                return path;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 跳转到用户主页

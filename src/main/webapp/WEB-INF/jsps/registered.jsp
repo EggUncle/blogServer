@@ -35,7 +35,7 @@
                     Registered Page
                 </h1>
             </div>
-            <form:form  class="form-horizontal" role="form" method="POST" modelAttribute="my_user" action="/add_user">
+            <form  class="form-horizontal" role="form" method="POST" modelAttribute="my_user" action="/add_user" enctype="multipart/form-data">
                 <!--用户名-->
                 <div class="form-group">
                     <label for="username" class="col-sm-2 control-label">userName</label>
@@ -52,25 +52,26 @@
                 </div>
                 <!--昵称-->
                 <div class="form-group">
-                    <label for="nickname" class="col-sm-2 control-label">userName</label>
+                    <label for="nickname" class="col-sm-2 control-label">nickName</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="nickname" name="nickname"/>
                     </div>
                 </div>
                 <!--头像-->
-                <%--<div class="form-group">--%>
-                    <%--<label for="inputIcon">头像</label>--%>
-                    <%--<input type="file" id="inputIcon" name="iconFile">--%>
-                    <%--&lt;%&ndash;<p class="help-block">这里是块级帮助文本的实例。</p>&ndash;%&gt;--%>
-                <%--</div>--%>
-
-
+                <div class="form-group">
+                    <label for="inputIcon">头像</label>
+                    <div class="col-sm-10">
+                        <input type="file" id="inputIcon" name="iconFile">
+                    </div>
+                    <%--<p class="help-block">这里是块级帮助文本的实例。</p>--%>
+                </div>
 
                 <!--背景图片-->
                 <div class="form-group">
                     <label for="inputBg">背景图片</label>
-                    <input type="file" id="inputBg" name="bgPath">
-                    <%--<p class="help-block">这里是块级帮助文本的实例。</p>--%>
+                    <div class="col-sm-10">
+                        <input type="file" id="inputBg" name="bgFile">
+                    </div>
                 </div>
 
                 <!--描述-->
@@ -97,14 +98,19 @@
                 <%
                     }
                 %>
-            </form:form>
+            </form>
 
             <form method="post" action="/file/upload" enctype="multipart/form-data">
-                选择一个文件:
+                上传头像文件
                 <input type="file" name="uploadFile" />
-                <br/><br/>
                 <input type="submit" value="上传" />
             </form>
+            <form method="post" action="/file/upload" enctype="multipart/form-data">
+                上传背景文件
+                <input type="file" name="uploadFile" />
+                <input type="submit" value="上传" />
+            </form>
+
         </div>
     </div>
 </div>

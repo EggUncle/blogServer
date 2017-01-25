@@ -142,9 +142,10 @@
     <!-- 开启事务管理注解 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <!--对静态资源的访问-->
-    <mvc:resources mapping="images/**" location="WEB-INF/jsps/images/" />
-    <mvc:resources mapping="assets/**" location="WEB-INF/jsps/assets/" />
+    <!--&lt;!&ndash;对静态资源的访问&ndash;&gt;-->
+    <!--<mvc:resources mapping="images/**" location="WEB-INF/images/" />-->
+    <!--<mvc:resources mapping="assets/**" location="WEB-INF/assets/" />-->
+
 
 
     <!-- 上传文件 -->

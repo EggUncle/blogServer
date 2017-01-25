@@ -21,19 +21,17 @@ public class UserEntity {
     private String status;
     private String bgPath;
 
-    private File iconFile;
-
-    public File getIconFile() {
-        return iconFile;
-    }
-
-    public void setIconFile(File iconFile) {
-        this.iconFile = iconFile;
-    }
-
+   // private File iconFile;
     @JsonIgnore
     private String userpasswd;
 
+//    public File getIconFile() {
+//        return iconFile;
+//    }
+//
+//    public void setIconFile(File iconFile) {
+//        this.iconFile = iconFile;
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -89,7 +87,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "icon_path", nullable = true, length = 45)
+    @Column(name = "iconPath", nullable = true, length = 256)
     public String getIconPath() {
         return iconPath;
     }
@@ -129,7 +127,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "bg_path", nullable = true, length = 45)
+    @Column(name = "bgPath", nullable = true, length = 256)
     public String getBgPath() {
         return bgPath;
     }

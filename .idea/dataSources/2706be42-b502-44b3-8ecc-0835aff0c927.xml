@@ -80,25 +80,25 @@
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="24" parent="9" name="icon_path">
-      <Position>4</Position>
-      <DataType>varchar(45)|0</DataType>
-    </column>
-    <column id="25" parent="9" name="description">
+    <column id="24" parent="9" name="description">
       <Position>5</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="26" parent="9" name="nickname">
+    <column id="25" parent="9" name="nickname">
       <Position>6</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="27" parent="9" name="status">
+    <column id="26" parent="9" name="status">
       <Position>7</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="28" parent="9" name="bg_path">
+    <column id="27" parent="9" name="iconPath">
+      <Position>4</Position>
+      <DataType>varchar(256)|0</DataType>
+    </column>
+    <column id="28" parent="9" name="bgPath">
       <Position>8</Position>
-      <DataType>varchar(45)|0</DataType>
+      <DataType>varchar(256)|0</DataType>
     </column>
     <key id="29" parent="9" name="PRIMARY">
       <ColNames>userId</ColNames>

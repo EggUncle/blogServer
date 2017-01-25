@@ -40,29 +40,27 @@ public class FIleController {
 
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
     public String login(@RequestParam(value = "uploadFile",required = false)MultipartFile file,HttpServletRequest request) {
-        //基本表单
-        System.out.println("+++++++");
 
         //获得物理路径webapp所在路径
-        String pathRoot = request.getSession().getServletContext().getRealPath("");
-        String path="";
-        if(!file.isEmpty()){
-            //生成uuid作为文件名称
-            String uuid = UUID.randomUUID().toString().replaceAll("-","");
-            //获得文件类型（可以判断如果不是图片，禁止上传）
-            String contentType=file.getContentType();
-            //获得文件后缀名称
-            String imageName=contentType.substring(contentType.indexOf("/")+1);
-            path="/static/images/"+uuid+"."+imageName;
-            try {
-                file.transferTo(new File(pathRoot+path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(path);
-
-
+//        String pathRoot = request.getSession().getServletContext().getRealPath("");
+//        String path="";
+//        if(!file.isEmpty()){
+//            //生成uuid作为文件名称
+//            String uuid = UUID.randomUUID().toString().replaceAll("-","");
+//            //获得文件类型（可以判断如果不是图片，禁止上传）
+//            String contentType=file.getContentType();
+//            //获得文件后缀名称
+//            String imageName=contentType.substring(contentType.indexOf("/")+1);
+//            path="/static/images/"+uuid+"."+imageName;
+//            try {
+//                file.transferTo(new File(pathRoot+path));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        System.out.println(path);
+//
+//
 
         return "home";
     }
