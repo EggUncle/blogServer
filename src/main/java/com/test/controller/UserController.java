@@ -13,11 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by egguncle on 17-1-20.
@@ -115,32 +119,55 @@ public class UserController {
      */
     @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("my_user") UserEntity userEntity,
-                          ModelMap model) {
-
+                          ModelMap model,HttpServletRequest request) {
+        System.out.println("-----------------------------");
+        System.out.println(userEntity.getBgPath());
+        System.out.println(userEntity.getIconPath());
+        System.out.println(userEntity.getIconFile().getName());
+        String name=userEntity.getIconFile().getName();
+        String type=name.substring(name.indexOf("."),name.length());
+        System.out.println(type);
+        System.out.println(request.getSession().getServletContext().getRealPath(""));
+        System.out.println("-----------------------------");
         // 查询表中所有记录
         //List<TableBlogEntity> blogList = blogRepository.findAll();
 
+        return "registered";
         //判断用户提交的用户名是否重复
-        String userName = userEntity.getUsername();
-        List<UserEntity> user = userRepository.getUserByName(userName);
-        if (user == null || user.size() == 0) {
-            //获取提交来的用户实体类的密码
-            String inputPassWd = userEntity.getUserpasswd();
-            //进行MD5加密
-            CipherUtil cipherUtil = new CipherUtil();
-            String passwdByMD5 = cipherUtil.generatePassword(inputPassWd);
-            //将用户实体类的密码设置为加密好的MD5值
-            userEntity.setUserpasswd(passwdByMD5);
-            userRepository.save(userEntity);
-        } else {
-            model.addAttribute("repeat", true);
-            return "registered";
-        }
-        //查询表中所有记录
-        List<UserEntity> userList = userRepository.findAll();
-        // 将所有记录传递给要返回的jsp页面，放在List当中
-        model.addAttribute("userList", userList);
-        return "test";
+//        String userName = userEntity.getUsername();
+//        List<UserEntity> user = userRepository.getUserByName(userName);
+//        if (user == null || user.size() == 0) {
+//            //获取提交来的用户实体类的密码
+//            String inputPassWd = userEntity.getUserpasswd();
+//            //进行MD5加密
+//            CipherUtil cipherUtil = new CipherUtil();
+//            String passwdByMD5 = cipherUtil.generatePassword(inputPassWd);
+//            //将用户实体类的密码设置为加密好的MD5值
+//            userEntity.setUserpasswd(passwdByMD5);
+//            userRepository.save(userEntity);
+//        } else {
+//            model.addAttribute("repeat", true);
+//            return "registered";
+//        }
+//        //查询表中所有记录
+//        List<UserEntity> userList = userRepository.findAll();
+//        // 将所有记录传递给要返回的jsp页面，放在List当中
+//        model.addAttribute("userList", userList);
+//        return "test";
+    }
+
+    /**
+     * 跳转到用户主页
+     * @param userId
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = "/user_index/{userId}")
+    public String myBlog(@PathVariable("userId") int userId, ModelMap modelMap) {
+        //从数据库中获取对应用户ID的博客实体类
+        List<BlogEntity> listBlog = blogRepository.getBlogListByUserId(userId);
+        modelMap.addAttribute("blogList", listBlog);
+        return "userIndex";
     }
 
 }

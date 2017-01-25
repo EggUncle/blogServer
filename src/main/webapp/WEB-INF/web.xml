@@ -17,7 +17,15 @@
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
+        <!-- 不拦截静态文件 -->
+        <!--<url-pattern>/js/*</url-pattern>-->
+        <!--<url-pattern>/css/*</url-pattern>-->
+        <!--<url-pattern>/images/*</url-pattern>-->
+        <!--<url-pattern>/fonts/*</url-pattern>-->
     </servlet-mapping>
+
+
+
 
 
     <filter>

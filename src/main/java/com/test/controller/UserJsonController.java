@@ -31,7 +31,7 @@ public class UserJsonController {
     /**
      * 客户端进行登录的类
      * @param userName
-     * @param passwd   此处的密码是在客户端经过MD5加密的值
+     * @param passwd   此处的密码是在客户端经过MD5加密的值，加密过程在客户端执行
      * @return
      */
     @ResponseBody

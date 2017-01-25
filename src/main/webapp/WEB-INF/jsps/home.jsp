@@ -55,7 +55,7 @@
                         <a href="/jsps/edit_blog">edit blog</a>
                     </li>
                     <li>
-                        <a href="/myblog/<%=user.getUserId()%>">my blog</a>
+                        <a href="/user_index/<%=user.getUserId()%>">my blog</a>
                     </li>
                     <li class="divider">
                     </li>

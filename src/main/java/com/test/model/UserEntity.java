@@ -1,10 +1,11 @@
 package com.test.model;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
 
 /**
  * Created by egguncle on 17-1-17.
@@ -14,9 +15,25 @@ import javax.persistence.*;
 public class UserEntity {
     private int userId;
     private String username;
+    private String iconPath;
+    private String description;
+    private String nickname;
+    private String status;
+    private String bgPath;
+
+    private File iconFile;
+
+    public File getIconFile() {
+        return iconFile;
+    }
+
+    public void setIconFile(File iconFile) {
+        this.iconFile = iconFile;
+    }
 
     @JsonIgnore
     private String userpasswd;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,5 +86,55 @@ public class UserEntity {
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (userpasswd != null ? userpasswd.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "icon_path", nullable = true, length = 45)
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    @Basic
+    @Column(name = "description", nullable = true, length = 45)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Basic
+    @Column(name = "nickname", nullable = true, length = 45)
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = true, length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Basic
+    @Column(name = "bg_path", nullable = true, length = 45)
+    public String getBgPath() {
+        return bgPath;
+    }
+
+    public void setBgPath(String bgPath) {
+        this.bgPath = bgPath;
     }
 }

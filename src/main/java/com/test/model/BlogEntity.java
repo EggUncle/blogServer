@@ -14,6 +14,7 @@ public class BlogEntity {
     private String blogTitle;
     private String blogContent;
     private UserEntity tableUserByUserId;
+    private String imgPath;
 
     @Id
     @Column(name = "blogId", nullable = false)
@@ -87,5 +88,15 @@ public class BlogEntity {
 
     public void setTableUserByUserId(UserEntity tableUserByUserId) {
         this.tableUserByUserId = tableUserByUserId;
+    }
+
+    @Basic
+    @Column(name = "imgPath", nullable = true, length = 45)
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }
