@@ -17,8 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
@@ -119,16 +118,33 @@ public class UserController {
      */
     @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("my_user") UserEntity userEntity,
-                          ModelMap model,HttpServletRequest request) {
+                          ModelMap model, HttpServletRequest request) {
         System.out.println("-----------------------------");
         System.out.println(userEntity.getBgPath());
         System.out.println(userEntity.getIconPath());
         System.out.println(userEntity.getIconFile().getName());
-        String name=userEntity.getIconFile().getName();
-        String type=name.substring(name.indexOf("."),name.length());
+        String name = userEntity.getIconFile().getName();
+        String type = name.substring(name.indexOf("."), name.length());
         System.out.println(type);
         System.out.println(request.getSession().getServletContext().getRealPath(""));
         System.out.println("-----------------------------");
+
+//        File file = userEntity.getIconFile();
+//
+//
+//        String path = request.getSession().getServletContext().getRealPath("") + "static/images/" + name;
+//        try {
+//            File imageFile = new File(path);
+//            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//
+//            objectOutputStream.writeObject(file);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         // 查询表中所有记录
         //List<TableBlogEntity> blogList = blogRepository.findAll();
 
@@ -158,6 +174,7 @@ public class UserController {
 
     /**
      * 跳转到用户主页
+     *
      * @param userId
      * @param modelMap
      * @return

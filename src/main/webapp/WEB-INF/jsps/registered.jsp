@@ -58,11 +58,13 @@
                     </div>
                 </div>
                 <!--头像-->
-                <div class="form-group">
-                    <label for="inputIcon">头像</label>
-                    <input type="file" id="inputIcon" name="iconFile">
-                    <%--<p class="help-block">这里是块级帮助文本的实例。</p>--%>
-                </div>
+                <%--<div class="form-group">--%>
+                    <%--<label for="inputIcon">头像</label>--%>
+                    <%--<input type="file" id="inputIcon" name="iconFile">--%>
+                    <%--&lt;%&ndash;<p class="help-block">这里是块级帮助文本的实例。</p>&ndash;%&gt;--%>
+                <%--</div>--%>
+
+
 
                 <!--背景图片-->
                 <div class="form-group">
@@ -96,6 +98,13 @@
                     }
                 %>
             </form:form>
+
+            <form method="post" action="/file/upload" enctype="multipart/form-data">
+                选择一个文件:
+                <input type="file" name="uploadFile" />
+                <br/><br/>
+                <input type="submit" value="上传" />
+            </form>
         </div>
     </div>
 </div>
