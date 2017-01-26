@@ -44,19 +44,16 @@ public class UserApiController {
         System.out.println("---------------------------");
 
         LoginJson loginJson = new LoginJson();
-        loginJson.setError(false);
         UserEntity user = userRepository.login(userName, passwd);
 
         if (user != null) {
             System.out.println("success");
-            loginJson.setUserName(userName);
-            loginJson.setUserId(user.getUserId());
-            loginJson.setSuccess(true);
+            loginJson.setError(false);
+            loginJson.setUserEntity(user);
             return loginJson;
         } else {
             System.out.println("failed");
-            loginJson.setUserName("");
-            loginJson.setSuccess(false);
+            loginJson.setError(true);
             return loginJson;
         }
 

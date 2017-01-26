@@ -9,16 +9,8 @@ public class LoginJson {
     //是否发生错误
     private boolean error;
 
-    //用户名
-    private String userName;
-
-    //用户ID
-    private int userId;
-
-
-    //是否成功
-    private boolean success;
-
+    //结果
+    private UserEntity userEntity;
 
     public boolean isError() {
         return error;
@@ -28,28 +20,11 @@ public class LoginJson {
         this.error = error;
     }
 
-    public String getUserName() {
-        return userName;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
-
-    public boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
 }
