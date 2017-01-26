@@ -7,6 +7,7 @@ import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 
 @Controller
-public class BlogJsonController {
+public class BlogApiController {
 
     // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
     @Autowired
@@ -38,7 +39,8 @@ public class BlogJsonController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/json/submit_blog", method = RequestMethod.POST)
+    @Transactional
+    @RequestMapping(value = "/api/submit_blog", method = RequestMethod.POST)
     public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content) {
 
         //获取当前时间
@@ -53,6 +55,15 @@ public class BlogJsonController {
 
         //通过userID来获取对应用户的ID
         UserEntity user = userRepository.getOne(userId);
+
+        System.out.println(user.getUserId());
+        System.out.println(user.getBgPath());
+        System.out.println(user.getIconPath());
+        System.out.println(user.getUsername());
+        System.out.println(user.getNickname());
+        System.out.println(user.getDescription());
+
+
         blogEntity.setTableUserByUserId(user);
 
         //存入数据库
@@ -73,7 +84,7 @@ public class BlogJsonController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/json/blog/{type}/{blogId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/blog/{type}/{blogId}", method = RequestMethod.GET)
     public BlogJson getBlogJson(@PathVariable("type") String type, @PathVariable("blogId") int blogId) {
         List<BlogEntity> blogList = new ArrayList<>();
 

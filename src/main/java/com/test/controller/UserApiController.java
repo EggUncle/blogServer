@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 
 @Controller
-public class UserJsonController {
+public class UserApiController {
 
 
     // 自动装配数据库接口，不需要再写原始的Connection来操作数据库
@@ -35,7 +35,7 @@ public class UserJsonController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/json/client_login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/client_login", method = RequestMethod.POST)
     public LoginJson login(@RequestParam("userName") String userName, @RequestParam("passwd") String passwd) {
 
 

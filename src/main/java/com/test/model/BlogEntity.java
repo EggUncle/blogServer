@@ -91,7 +91,7 @@ public class BlogEntity {
     }
 
     @Basic
-    @Column(name = "imgPath", nullable = true, length = 45)
+    @Column(name = "imgPath", nullable = true, length = 256)
     public String getImgPath() {
         return imgPath;
     }

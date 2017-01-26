@@ -9,6 +9,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    request.setAttribute("basePath", basePath);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,10 +38,19 @@
                     EDIT BLOG
                 </h1>
             </div>
-            <form:form   method="POST" modelAttribute="my_blog" action="/add_blog">
+            <form  method="POST" modelAttribute="my_blog" action="/add_blog" enctype="multipart/form-data">
                 <div class="form-group">
                     <label name="userId"><%=((UserEntity)session.getAttribute("user")).getUserId()%></label>
                 </div>
+                <!--标题图-->
+                <div class="form-group">
+                    <label for="inputImg">标题图</label>
+                    <div class="col-sm-10">
+                        <input type="file" id="inputImg" name="imageFile">
+                    </div>
+                    <%--<p class="help-block">这里是块级帮助文本的实例。</p>--%>
+                </div>
+
                 <div class="form-group">
                     <label for="blogTitle">title</label><input type="text" class="form-control" id="blogTitle"  name="blogTitle"/>
                 </div>
@@ -46,7 +60,7 @@
                     <textarea class="form-control" id="blogContent" name="blogContent" rows="30"></textarea>
                 </div>
                 <button type="submit" class="btn btn-default">submit</button>
-            </form:form>
+            </form>
         </div>
     </div>
 </div>

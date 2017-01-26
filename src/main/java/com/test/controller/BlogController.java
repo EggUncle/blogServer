@@ -7,14 +7,16 @@ import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by egguncle on 17-1-24.
@@ -79,7 +81,7 @@ public class BlogController {
      */
     @RequestMapping(value = "/add_blog", method = RequestMethod.POST)
     public String addBlog(@ModelAttribute("my_blog") BlogEntity blogEntity, HttpSession session,
-                          ModelMap model) {
+                          ModelMap model,@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, HttpServletRequest request) {
 
         System.out.println("---------------------------------------");
         System.out.println();
@@ -91,8 +93,30 @@ public class BlogController {
         blogEntity.setBlogDate(sqlDate);
 
         UserEntity userEntity = (UserEntity) session.getAttribute("user");
+
+        System.out.println(userEntity.getNickname());
+
         blogEntity.setTableUserByUserId(userEntity);
 
+        //获得物理路径webapp所在路径
+        String pathRoot = request.getSession().getServletContext().getRealPath("");
+        String path = "";
+        if (!imageFile.isEmpty()) {
+            //生成uuid作为文件名称
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            //获得文件类型（可以判断如果不是图片，禁止上传）
+            String contentType = imageFile.getContentType();
+            //获得文件后缀名称
+            String imageName = contentType.substring(contentType.indexOf("/") + 1);
+            path = "/static/images/blog/"  + uuid + "." + imageName;
+
+            try {
+                imageFile.transferTo(new File(pathRoot + path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        blogEntity.setImgPath(path);
 
         blogRepository.save(blogEntity);
 

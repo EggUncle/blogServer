@@ -10,6 +10,7 @@ import com.test.repository.UserRepository;
 import com.test.util.CipherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -140,7 +141,7 @@ public class UserController {
 
         if (user == null || user.size() == 0) {
             //获取用户昵称
-            String nickName= userEntity.getNickname();
+            String nickName = userEntity.getNickname();
             userEntity.setNickname(nickName);
 
             //获取提交来的用户实体类的密码
@@ -154,8 +155,8 @@ public class UserController {
             //获得物理路径webapp所在路径
             String pathRoot = request.getSession().getServletContext().getRealPath("");
             //保存头像和背景图片，并且返回路径
-            String iconPath = saveFile(iconFile, pathRoot,"icon");
-            String bgPath = saveFile(bgFile, pathRoot,"bg");
+            String iconPath = saveFile(iconFile, pathRoot, "icon");
+            String bgPath = saveFile(bgFile, pathRoot, "bg");
             userEntity.setIconPath(iconPath);
             userEntity.setBgPath(bgPath);
             userRepository.save(userEntity);
@@ -173,13 +174,12 @@ public class UserController {
     /**
      * 保存文件的方法 用于保存用户上传的头像和背景图
      *
-     *
      * @param file
      * @param pathRoot 物理路径webapp所在路径
-     * @param type 类型：icon or bg
+     * @param type     类型：icon or bg
      * @return 保存的文件的路径
      */
-    private String saveFile(MultipartFile file, String pathRoot,String type) {
+    private String saveFile(MultipartFile file, String pathRoot, String type) {
 
         String path = "";
         //保存用户头像文件
@@ -190,7 +190,7 @@ public class UserController {
             String contentType = file.getContentType();
             //获得文件后缀名称
             String imageName = contentType.substring(contentType.indexOf("/") + 1);
-            path = "/static/images/"+type +"/" + uuid + "." + imageName;
+            path = "/static/images/" + type + "/" + uuid + "." + imageName;
 
             try {
                 file.transferTo(new File(pathRoot + path));
@@ -213,11 +213,26 @@ public class UserController {
      * @param modelMap
      * @return
      */
+    @Transactional
     @RequestMapping(value = "/user_index/{userId}")
     public String myBlog(@PathVariable("userId") int userId, ModelMap modelMap) {
         //从数据库中获取对应用户ID的博客实体类
         List<BlogEntity> listBlog = blogRepository.getBlogListByUserId(userId);
         modelMap.addAttribute("blogList", listBlog);
+
+        //从数据库中获取对应用户实例
+        UserEntity userEntity = userRepository.getOne(userId);
+        modelMap.addAttribute("userInfo", userEntity);
+
+
+        System.out.println(userEntity.getUserId());
+        System.out.println(userEntity.getBgPath());
+        System.out.println(userEntity.getIconPath());
+        System.out.println(userEntity.getUsername());
+        System.out.println(userEntity.getNickname());
+        System.out.println(userEntity.getDescription());
+
+
         return "userIndex";
     }
 
