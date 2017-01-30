@@ -39,20 +39,24 @@
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="16" parent="8" name="userId_idx">
+    <column id="16" parent="8" name="imgPath">
+      <Position>6</Position>
+      <DataType>varchar(256)|0</DataType>
+    </column>
+    <index id="17" parent="8" name="userId_idx">
       <ColNames>userId</ColNames>
     </index>
-    <key id="17" parent="8" name="PRIMARY">
+    <key id="18" parent="8" name="PRIMARY">
       <ColNames>blogId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="18" parent="8" name="FKikga6ujqd4yst137sicmkvxyv">
+    <foreign-key id="19" parent="8" name="FKikga6ujqd4yst137sicmkvxyv">
       <ColNames>userId</ColNames>
       <RefSchemaName>db_blog</RefSchemaName>
       <RefTableName>table_user</RefTableName>
       <RefColNames>userId</RefColNames>
     </foreign-key>
-    <foreign-key id="19" parent="8" name="userId">
+    <foreign-key id="20" parent="8" name="userId">
       <ColNames>userId</ColNames>
       <RefSchemaName>db_blog</RefSchemaName>
       <RefTableName>table_user</RefTableName>
@@ -60,23 +64,43 @@
       <OnUpdate>no-action</OnUpdate>
       <OnDelete>no-action</OnDelete>
     </foreign-key>
-    <column id="20" parent="9" name="userId">
+    <column id="21" parent="9" name="userId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="21" parent="9" name="username">
+    <column id="22" parent="9" name="username">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="22" parent="9" name="userpasswd">
+    <column id="23" parent="9" name="userpasswd">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="23" parent="9" name="PRIMARY">
+    <column id="24" parent="9" name="iconPath">
+      <Position>4</Position>
+      <DataType>varchar(256)|0</DataType>
+    </column>
+    <column id="25" parent="9" name="description">
+      <Position>5</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="26" parent="9" name="nickname">
+      <Position>6</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="27" parent="9" name="status">
+      <Position>7</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="28" parent="9" name="bgPath">
+      <Position>8</Position>
+      <DataType>varchar(256)|0</DataType>
+    </column>
+    <key id="29" parent="9" name="PRIMARY">
       <ColNames>userId</ColNames>
       <Primary>1</Primary>
     </key>

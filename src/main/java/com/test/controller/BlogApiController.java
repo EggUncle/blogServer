@@ -5,14 +5,23 @@ import com.test.model.BlogJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
+import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by egguncle on 17-1-23.
@@ -41,17 +50,37 @@ public class BlogApiController {
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/api/submit_blog", method = RequestMethod.POST)
-    public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content) {
+    public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content,
+                             @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype")String imageType ,HttpServletRequest request) {
 
         //获取当前时间
         java.util.Date date = new java.util.Date();
         Date sqlDate = new Date(date.getTime());
+
+        //获得物理路径webapp所在路径
+        String pathRoot = request.getSession().getServletContext().getRealPath("");
+        String path = "";
+
+        //生成uuid作为文件名称
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        //获得文件后缀名称
+        //  String imageName = contentType.substring(contentType.indexOf("/") + 1);
+        String imageName = imageType;
+
+        //写入图片
+        if (generateImage(base64StrOfImg,pathRoot+path)){
+            System.out.println("success");
+            path = "/static/images/blog/" + uuid + "." + imageName;
+        }else{
+            System.out.println("failed");
+        }
 
         //生成博客对象
         BlogEntity blogEntity = new BlogEntity();
         blogEntity.setBlogDate(sqlDate);
         blogEntity.setBlogTitle(title);
         blogEntity.setBlogContent(content);
+        blogEntity.setImgPath(path);
 
         //通过userID来获取对应用户的ID
         UserEntity user = userRepository.getOne(userId);
@@ -63,6 +92,8 @@ public class BlogApiController {
         System.out.println(user.getNickname());
         System.out.println(user.getDescription());
 
+        System.out.println(blogEntity.getImgPath());
+
 
         blogEntity.setTableUserByUserId(user);
 
@@ -70,6 +101,37 @@ public class BlogApiController {
         blogRepository.save(blogEntity);
 
         return "success";
+    }
+
+
+    /**
+     * 对字节数组字符串进行Base64解码并生成图片
+     *
+     * @param imgStr      Base64字符串
+     * @param imgFilePath 生成图片保存路径
+     * @return boolean
+     */
+    public boolean generateImage(String imgStr, String imgFilePath) {
+        if (imgStr == null) // 图像数据为空
+            return false;
+        BASE64Decoder decoder = new BASE64Decoder();
+        try {
+            // Base64解码
+            byte[] bytes = decoder.decodeBuffer(imgStr);
+            for (int i = 0; i < bytes.length; ++i) {
+                if (bytes[i] < 0) {// 调整异常数据
+                    bytes[i] += 256;
+                }
+            }
+            // 生成图片
+            OutputStream out = new FileOutputStream(imgFilePath);
+            out.write(bytes);
+            out.flush();
+            out.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
