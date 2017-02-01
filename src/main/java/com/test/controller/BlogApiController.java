@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
+import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -53,9 +54,18 @@ public class BlogApiController {
     public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content,
                              @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype")String imageType ,HttpServletRequest request) {
 
+
+
         //获取当前时间
         java.util.Date date = new java.util.Date();
         Date sqlDate = new Date(date.getTime());
+
+        //生成博客对象
+        BlogEntity blogEntity = new BlogEntity();
+        blogEntity.setBlogDate(sqlDate);
+        blogEntity.setBlogTitle(title);
+        blogEntity.setBlogContent(content);
+
 
         //获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");
@@ -66,21 +76,19 @@ public class BlogApiController {
         //获得文件后缀名称
         //  String imageName = contentType.substring(contentType.indexOf("/") + 1);
         String imageName = imageType;
-
+        path = "static/images/blog/" + uuid + "." + imageName;
         //写入图片
         if (generateImage(base64StrOfImg,pathRoot+path)){
             System.out.println("success");
-            path = "/static/images/blog/" + uuid + "." + imageName;
+           // path = "/static/images/blog/" + uuid + "." + imageName;
+            //给博客对象设置图片路径
+            blogEntity.setImgPath(path);
+
         }else{
             System.out.println("failed");
         }
 
-        //生成博客对象
-        BlogEntity blogEntity = new BlogEntity();
-        blogEntity.setBlogDate(sqlDate);
-        blogEntity.setBlogTitle(title);
-        blogEntity.setBlogContent(content);
-        blogEntity.setImgPath(path);
+
 
         //通过userID来获取对应用户的ID
         UserEntity user = userRepository.getOne(userId);
@@ -92,13 +100,11 @@ public class BlogApiController {
         System.out.println(user.getNickname());
         System.out.println(user.getDescription());
 
-        System.out.println(blogEntity.getImgPath());
-
-
         blogEntity.setTableUserByUserId(user);
-
         //存入数据库
         blogRepository.save(blogEntity);
+
+
 
         return "success";
     }
@@ -112,6 +118,7 @@ public class BlogApiController {
      * @return boolean
      */
     public boolean generateImage(String imgStr, String imgFilePath) {
+        System.out.println(imgFilePath);
         if (imgStr == null) // 图像数据为空
             return false;
         BASE64Decoder decoder = new BASE64Decoder();
