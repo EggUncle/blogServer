@@ -1,5 +1,7 @@
 package com.test.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -13,6 +15,7 @@ public class BlogEntity {
     private Date blogDate;
     private String blogTitle;
     private String blogContent;
+
     private UserEntity tableUserByUserId;
     private String imgPath;
 

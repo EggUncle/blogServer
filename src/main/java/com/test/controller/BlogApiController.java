@@ -51,9 +51,14 @@ public class BlogApiController {
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/api/submit_blog", method = RequestMethod.POST)
-    public String submitBlog(@RequestParam("userId") int userId, @RequestParam("title") String title, @RequestParam("content") String content,
-                             @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype")String imageType ,HttpServletRequest request) {
+    public String submitBlog(@RequestParam("userName") String userName, @RequestParam("userPassWd") String userPassWd, @RequestParam("title") String title, @RequestParam("content") String content,
+                             @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype") String imageType, HttpServletRequest request) {
 
+
+        UserEntity user=userRepository.login(userName,userPassWd);
+        if (user==null){
+            return "failed";
+        }
 
 
         //获取当前时间
@@ -78,20 +83,15 @@ public class BlogApiController {
         String imageName = imageType;
         path = "static/images/blog/" + uuid + "." + imageName;
         //写入图片
-        if (generateImage(base64StrOfImg,pathRoot+path)){
+        if (generateImage(base64StrOfImg, pathRoot + path)) {
             System.out.println("success");
-           // path = "/static/images/blog/" + uuid + "." + imageName;
+            // path = "/static/images/blog/" + uuid + "." + imageName;
             //给博客对象设置图片路径
             blogEntity.setImgPath(path);
 
-        }else{
+        } else {
             System.out.println("failed");
         }
-
-
-
-        //通过userID来获取对应用户的ID
-        UserEntity user = userRepository.getOne(userId);
 
         System.out.println(user.getUserId());
         System.out.println(user.getBgPath());
@@ -103,7 +103,6 @@ public class BlogApiController {
         blogEntity.setTableUserByUserId(user);
         //存入数据库
         blogRepository.save(blogEntity);
-
 
 
         return "success";
@@ -178,5 +177,29 @@ public class BlogApiController {
         return blogJson;
     }
 
+    /**
+     * 删除博客请求
+     *
+     * @param blogId     需要删除的博客的ID
+     * @param userName
+     * @param userPassWd
+     * @return
+     */
+    @ResponseBody
+    @Transactional
+    @RequestMapping(value = "/api/blog/delete", method = RequestMethod.POST)
+    public String deleteBlogById(@RequestParam("blogId") int blogId, @RequestParam("userName") String userName, @RequestParam("userPassWd") String userPassWd) {
+        UserEntity user = userRepository.login(userName, userPassWd);
+        if (user != null) {
+            System.out.println("用户存在");
+            System.out.println(blogId);
+            System.out.println(user.getUserId());
+            blogRepository.deleteBlogById(blogId,user.getUserId());
+        }else{
+            return "failed";
+        }
+
+        return "success";
+    }
 
 }

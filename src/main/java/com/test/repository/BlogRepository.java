@@ -96,6 +96,15 @@ public interface BlogRepository extends JpaRepository<BlogEntity, Integer> {
     @Query(value = "select * from table_blog where blogId<?1 and userId=?2 ORDER BY blogId DESC limit 20", nativeQuery = true)
     List<BlogEntity> getBlogListMinWithUser(int blogId,int userId);
 
+    /**
+     * 删除对应ID的博客
+     * @param blogId 博客ID
+     * @param userId 博客作者的ID
+     */
+    @Modifying
+    @Query(value = "delete from table_blog where blogid = ?1 and userId=?2",nativeQuery = true)
+    void deleteBlogById(int blogId,int userId);
+
 
 
 }
