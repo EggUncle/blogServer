@@ -1,17 +1,24 @@
 package com.test.controller;
 
+
+import com.squareup.okhttp.*;
+import com.squareup.okhttp.RequestBody;
 import com.test.model.BlogEntity;
 import com.test.model.BlogJson;
 import com.test.model.LoginJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
+import com.test.util.CheckSumBuilder;
+import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+
 
 /**
  * Created by egguncle on 17-1-24.
@@ -29,6 +36,9 @@ public class UserApiController {
 
     @Autowired
     UserRepository userRepository;
+
+    private final static String APP_KEY = "6fdfb363550db8fc24da4d44fb7f1238";
+    private final static String APP_SECRET = "9243c16b3ba1";
 
     /**
      * 客户端进行登录的类
@@ -100,5 +110,89 @@ public class UserApiController {
         return blogJson;
     }
 
+
+
+    /**
+     * 用户注册接口
+     * @param userName 用户名
+     * @param nickName 昵称
+     * @param passwd 密码
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/api/user/registered", method = RequestMethod.POST)
+    public String registeredWithIM(@RequestParam("userName") String userName, @RequestParam("nickName") String nickName, @RequestParam("passwd") String passwd) {
+        //判断用户提交的用户名是否重复
+        List<UserEntity> user = userRepository.getUserByName(userName);
+        if (user==null||user.size()==0){
+            //新建用户实例并且将相关信息存入其中
+            UserEntity userEntity=new UserEntity();
+            userEntity.setUsername(userName);
+            userEntity.setNickname(nickName);
+            userEntity.setUserpasswd(passwd);
+
+            //向网易云信发送请求 获取token数据，并保存
+          //  System.out.println(registeredToIM(userName,userName));
+
+
+            //存入数据库
+            userRepository.save(userEntity);
+
+            return registeredToIM(userName,userName);
+        }
+
+        return "failed";
+    }
+
+
+    /**
+     * 网易云信注册用户部分
+     * @param accid
+     * @param name
+     * @return 请求结果
+     * @throws IOException
+     */
+    private String registeredToIM(String accid, String name)  {
+        String url = "https://api.netease.im/nimserver/user/create.action";
+        OkHttpClient client = new OkHttpClient();
+        //   MediaType MEDIA_TYPE_TEXT = MediaType.parse("application/x-www-form-urlencoded;charset=utf-8");
+        // RequestBody requestBody = RequestBody.create(MEDIA_TYPE_TEXT, "");
+        //设置body
+        RequestBody requestBody = new FormEncodingBuilder()
+                .add("accid", accid)
+                .add("name", name)
+                .build();
+
+        //随机数  10000~99999
+        String nonce = (new Random().nextInt(89999)+10000)+"";
+        String curTime = String.valueOf((new Date()).getTime() / 1000L);
+        String checkSum = CheckSumBuilder.getCheckSum(APP_SECRET, nonce, curTime);//参考 计算CheckSum的java代码
+
+        Request request = new Request.Builder().url(url)
+                //设置header
+                .addHeader("AppKey", APP_KEY)
+                .addHeader("Nonce", nonce)
+                .addHeader("CurTime", curTime)
+                .addHeader("CheckSum", checkSum)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+                .post(requestBody)
+                .build();
+
+
+        Response response = null;
+        String responseStr="";
+        System.out.println("---------------------------");
+        try {
+            //发送请求
+            response = client.newCall(request).execute();
+            responseStr=response.body().string();
+            System.out.println(responseStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("---------------------------");
+
+        return responseStr;
+    }
 
 }

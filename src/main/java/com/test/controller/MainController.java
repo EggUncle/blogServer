@@ -1,11 +1,8 @@
 package com.test.controller;
 
-import com.test.dao.BlogDao;
-import com.test.dao.UserDao;
-import com.test.model.BlogEntity;
-import com.test.model.BlogJson;
 
-import com.test.model.UserEntity;
+
+import com.test.model.BlogEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
 
@@ -15,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -32,15 +28,22 @@ public class MainController {
     @Autowired
     UserRepository userRepository;
 
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(ModelMap modelMap) {
+    public String index(ModelMap modelMap, HttpSession session) {
         //查询表中所有记录
         List<BlogEntity> blogList = blogRepository.findBlogList();
         // 将所有记录传递给要返回的jsp页面，放在List当中
         modelMap.addAttribute("blogList", blogList);
 
+
+
+
+
         return "home";
     }
+
+
 
     @RequestMapping(value = "/jsps/test", method = RequestMethod.GET)
     public String getBlogs(ModelMap modelMap) {

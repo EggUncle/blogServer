@@ -20,18 +20,13 @@ public class UserEntity {
     private String nickname;
     private String status;
     private String bgPath;
+    private String token;
 
    // private File iconFile;
     @JsonIgnore
     private String userpasswd;
 
-//    public File getIconFile() {
-//        return iconFile;
-//    }
-//
-//    public void setIconFile(File iconFile) {
-//        this.iconFile = iconFile;
-//    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -134,5 +129,15 @@ public class UserEntity {
 
     public void setBgPath(String bgPath) {
         this.bgPath = bgPath;
+    }
+
+    @Basic
+    @Column(name = "token", nullable = true, length = 128)
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
