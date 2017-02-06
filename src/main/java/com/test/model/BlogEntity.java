@@ -16,7 +16,7 @@ public class BlogEntity {
     private String blogTitle;
     private String blogContent;
 
-    private UserEntity tableUserByUserId;
+    private UserEntity userEntity;
     private String imgPath;
 
     @Id
@@ -85,12 +85,12 @@ public class BlogEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId")
-    public UserEntity getTableUserByUserId() {
-        return tableUserByUserId;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
-    public void setTableUserByUserId(UserEntity tableUserByUserId) {
-        this.tableUserByUserId = tableUserByUserId;
+    public void setUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Basic

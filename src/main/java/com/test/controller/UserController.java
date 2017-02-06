@@ -1,9 +1,6 @@
 package com.test.controller;
 
-import com.test.dao.UserDao;
 import com.test.model.BlogEntity;
-import com.test.model.BlogJson;
-import com.test.model.LoginJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
@@ -11,7 +8,6 @@ import com.test.util.CipherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 

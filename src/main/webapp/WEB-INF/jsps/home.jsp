@@ -108,13 +108,13 @@
                     </td>
                     <td>
                         <%
-                           if (blogEntity.getTableUserByUserId()==null){
+                           if (blogEntity.getUser()==null){
                         %>
                         未知
                         <%
                            }else{
                         %>
-                        <%=blogEntity.getTableUserByUserId().getUsername()%>
+                        <%=blogEntity.getUser().getUsername()%>
                         <%
                         }%>
                     </td>

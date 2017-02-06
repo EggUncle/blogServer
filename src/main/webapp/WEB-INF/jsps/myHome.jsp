@@ -99,13 +99,13 @@
                     </td>
                     <td>
                         <%
-                            if (BlogEntity.getTableUserByUserId()==null){
+                            if (BlogEntity.getUser()==null){
                         %>
                         未知
                         <%
                         }else{
                         %>
-                        <%=BlogEntity.getTableUserByUserId().getUsername()%>
+                        <%=BlogEntity.getUser().getUsername()%>
                         <%
                             }%>
                     </td>

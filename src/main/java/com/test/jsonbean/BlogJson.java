@@ -1,4 +1,6 @@
-package com.test.model;
+package com.test.jsonbean;
+
+import com.test.model.BlogEntity;
 
 import java.sql.Date;
 import java.util.List;

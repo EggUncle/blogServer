@@ -1,16 +1,19 @@
 package com.test.controller;
 
 
+
+
+import com.google.gson.Gson;
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.RequestBody;
+import com.test.jsonbean.RegisteredJson;
 import com.test.model.BlogEntity;
-import com.test.model.BlogJson;
-import com.test.model.LoginJson;
+import com.test.jsonbean.BlogJson;
+import com.test.jsonbean.LoginJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
 import com.test.util.CheckSumBuilder;
-import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +51,7 @@ public class UserApiController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/api/client_login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
     public LoginJson login(@RequestParam("userName") String userName, @RequestParam("passwd") String passwd) {
 
 
@@ -111,48 +114,65 @@ public class UserApiController {
     }
 
 
-
     /**
      * 用户注册接口
+     *
      * @param userName 用户名
      * @param nickName 昵称
-     * @param passwd 密码
-     * @return
+     * @param passwd   密码
+     * @return 注册的用户实例对象
      */
     @ResponseBody
     @RequestMapping(value = "/api/user/registered", method = RequestMethod.POST)
-    public String registeredWithIM(@RequestParam("userName") String userName, @RequestParam("nickName") String nickName, @RequestParam("passwd") String passwd) {
+    public LoginJson registeredWithIM(@RequestParam("userName") String userName, @RequestParam("nickName") String nickName, @RequestParam("passwd") String passwd) {
+        //建立返回对象
+        LoginJson loginJson=new LoginJson();
         //判断用户提交的用户名是否重复
         List<UserEntity> user = userRepository.getUserByName(userName);
-        if (user==null||user.size()==0){
+        if (user == null || user.size() == 0) {
             //新建用户实例并且将相关信息存入其中
-            UserEntity userEntity=new UserEntity();
+            UserEntity userEntity = new UserEntity();
             userEntity.setUsername(userName);
             userEntity.setNickname(nickName);
             userEntity.setUserpasswd(passwd);
 
-            //向网易云信发送请求 获取token数据，并保存
-          //  System.out.println(registeredToIM(userName,userName));
+            //向网易云信发送请求
+            String resultJson = registeredToIM(userName, userName);
+            //将网易云信返回的字符串转化为bean类
+            Gson gson=new Gson();
+            RegisteredJson registeredJson=gson.fromJson(resultJson,RegisteredJson.class);
 
+            //如果请求成功
+            if (registeredJson.getCode()==200) {
+                //从bean类中获取token对象
+                String token = registeredJson.getInfo().getToken();
+                //将token存入user中
+                userEntity.setToken(token);
+                //存入数据库
+                userRepository.save(userEntity);
 
-            //存入数据库
-            userRepository.save(userEntity);
+                //构建返回的对象
+                loginJson.setError(false);
+                loginJson.setUserEntity(userEntity);
+                return loginJson;
+            }
 
-            return registeredToIM(userName,userName);
         }
+        loginJson.setError(true);
 
-        return "failed";
+        return loginJson;
     }
 
 
     /**
      * 网易云信注册用户部分
+     *
      * @param accid
      * @param name
      * @return 请求结果
      * @throws IOException
      */
-    private String registeredToIM(String accid, String name)  {
+    private String registeredToIM(String accid, String name) {
         String url = "https://api.netease.im/nimserver/user/create.action";
         OkHttpClient client = new OkHttpClient();
         //   MediaType MEDIA_TYPE_TEXT = MediaType.parse("application/x-www-form-urlencoded;charset=utf-8");
@@ -164,7 +184,7 @@ public class UserApiController {
                 .build();
 
         //随机数  10000~99999
-        String nonce = (new Random().nextInt(89999)+10000)+"";
+        String nonce = (new Random().nextInt(89999) + 10000) + "";
         String curTime = String.valueOf((new Date()).getTime() / 1000L);
         String checkSum = CheckSumBuilder.getCheckSum(APP_SECRET, nonce, curTime);//参考 计算CheckSum的java代码
 
@@ -180,12 +200,12 @@ public class UserApiController {
 
 
         Response response = null;
-        String responseStr="";
+        String responseStr = "";
         System.out.println("---------------------------");
         try {
             //发送请求
             response = client.newCall(request).execute();
-            responseStr=response.body().string();
+            responseStr = response.body().string();
             System.out.println(responseStr);
         } catch (IOException e) {
             e.printStackTrace();

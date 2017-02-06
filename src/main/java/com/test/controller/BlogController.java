@@ -96,7 +96,7 @@ public class BlogController {
 
         System.out.println(userEntity.getNickname());
 
-        blogEntity.setTableUserByUserId(userEntity);
+        blogEntity.setUser(userEntity);
 
         //获得物理路径webapp所在路径
         String pathRoot = request.getSession().getServletContext().getRealPath("");

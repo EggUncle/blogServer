@@ -100,7 +100,11 @@
       <Position>8</Position>
       <DataType>varchar(256)|0</DataType>
     </column>
-    <key id="29" parent="9" name="PRIMARY">
+    <column id="29" parent="9" name="token">
+      <Position>9</Position>
+      <DataType>varchar(128)|0</DataType>
+    </column>
+    <key id="30" parent="9" name="PRIMARY">
       <ColNames>userId</ColNames>
       <Primary>1</Primary>
     </key>

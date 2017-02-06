@@ -38,7 +38,7 @@
             </div>
             <div>
                 <label for="authorName" class="col-sm-2 control-label">作者:</label>
-                  <p id="authorName"><%=blogEntity.getTableUserByUserId().getUsername()%></p>
+                  <p id="authorName"><%=blogEntity.getUser().getUsername()%></p>
             </div>
             <div>
                 <label for="date" class="col-sm-2 control-label">日期:</label>

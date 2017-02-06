@@ -1,23 +1,18 @@
 package com.test.controller;
 
 import com.test.model.BlogEntity;
-import com.test.model.BlogJson;
+import com.test.jsonbean.BlogJson;
 import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
-import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -100,7 +95,7 @@ public class BlogApiController {
         System.out.println(user.getNickname());
         System.out.println(user.getDescription());
 
-        blogEntity.setTableUserByUserId(user);
+        blogEntity.setUser(user);
         //存入数据库
         blogRepository.save(blogEntity);
 

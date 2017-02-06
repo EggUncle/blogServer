@@ -1,4 +1,6 @@
-package com.test.model;
+package com.test.jsonbean;
+
+import com.test.model.UserEntity;
 
 /**
  * Created by egguncle on 17-1-21.
