@@ -48,6 +48,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query(value = "select * from table_user where username=?1 and userpasswd=?2", nativeQuery = true)
     UserEntity login(String userName, String passwd);
 
+    /**
+     * 使用用户名和token进行不完全登录，来执行一些限制范围内的请求
+     *
+     * @param userName
+     * @param token
+     * @return
+     */
+    @Query(value = "select * from table_user where username=?1 and token=?2", nativeQuery = true)
+    UserEntity loginWithToken(String userName, String token);
+
 
     /**
      * 输入用户名获取用户对象，用来在注册的时候判断用户名是否重复

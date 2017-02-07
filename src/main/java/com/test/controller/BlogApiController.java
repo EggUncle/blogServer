@@ -38,19 +38,23 @@ public class BlogApiController {
     /**
      * 用来提交博客的方法
      *
-     * @param userId
+     * @param userName
+     * @param token
      * @param title
      * @param content
+     * @param base64StrOfImg
+     * @param imageType
+     * @param request
      * @return
      */
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/api/submit_blog", method = RequestMethod.POST)
-    public String submitBlog(@RequestParam("userName") String userName, @RequestParam("userPassWd") String userPassWd, @RequestParam("title") String title, @RequestParam("content") String content,
+    public String submitBlog(@RequestParam("userName") String userName, @RequestParam("token") String token, @RequestParam("title") String title, @RequestParam("content") String content,
                              @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype") String imageType, HttpServletRequest request) {
 
 
-        UserEntity user=userRepository.login(userName,userPassWd);
+        UserEntity user=userRepository.loginWithToken(userName,token);
         if (user==null){
             return "failed";
         }
