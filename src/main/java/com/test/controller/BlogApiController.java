@@ -52,7 +52,7 @@ public class BlogApiController {
     @RequestMapping(value = "/api/submit_blog", method = RequestMethod.POST)
     public String submitBlog(@RequestParam("userName") String userName, @RequestParam("token") String token, @RequestParam("title") String title, @RequestParam("content") String content,
                              @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype") String imageType, HttpServletRequest request) {
-
+        System.out.println(imageType+"0000000000000000000");
 
         UserEntity user=userRepository.loginWithToken(userName,token);
         if (user==null){
@@ -180,15 +180,15 @@ public class BlogApiController {
      * 删除博客请求
      *
      * @param blogId     需要删除的博客的ID
-     * @param userName
-     * @param userPassWd
+     * @param userName   
+     * @param token
      * @return
      */
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/api/blog/delete", method = RequestMethod.POST)
-    public String deleteBlogById(@RequestParam("blogId") int blogId, @RequestParam("userName") String userName, @RequestParam("userPassWd") String userPassWd) {
-        UserEntity user = userRepository.login(userName, userPassWd);
+    public String deleteBlogById(@RequestParam("blogId") int blogId, @RequestParam("userName") String userName, @RequestParam("token") String token) {
+        UserEntity user = userRepository.loginWithToken(userName, token);
         if (user != null) {
             System.out.println("用户存在");
             System.out.println(blogId);
