@@ -14,11 +14,13 @@ import com.test.model.UserEntity;
 import com.test.repository.BlogRepository;
 import com.test.repository.UserRepository;
 import com.test.util.CheckSumBuilder;
+import com.test.util.ImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
@@ -160,6 +162,8 @@ public class UserApiController {
         }
         loginJson.setError(true);
 
+
+
         return loginJson;
     }
 
@@ -213,6 +217,44 @@ public class UserApiController {
         System.out.println("---------------------------");
 
         return responseStr;
+    }
+
+    /**
+     *更新用户信息
+     * @param token
+     * @param json  传递过来的用户对象转化成的json
+     * @param base64StrOfImg
+     * @param imageType
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/api/user/updateinfo", method = RequestMethod.POST)
+    private UserEntity updateUserInfo(@RequestParam("token")String token,@RequestParam("json")String json, @RequestParam(value = "base64StrOfImg", required = false) String base64StrOfImg, @RequestParam(value = "imgtype") String imageType, HttpServletRequest request){
+        Gson gson=new Gson();
+        UserEntity userEntity=gson.fromJson(json,UserEntity.class);
+        String userName=userEntity.getUsername();
+        UserEntity userFind=userRepository.loginWithToken(userName,token);
+        if (userFind==null){
+            return null;
+        }
+
+        System.out.println(token);
+        System.out.println(json);
+        System.out.println(base64StrOfImg);
+        System.out.println(imageType);
+
+        //获得物理路径webapp所在路径
+        String pathRoot = request.getSession().getServletContext().getRealPath("");
+        //保存头像图片并获取路径
+        String path= ImgUtil.saveImg(pathRoot,base64StrOfImg,imageType,ImgUtil.USER_ICON);
+        System.out.println(path+"-------------------------");
+        userEntity.setIconPath(path);
+
+        userEntity.setUserpasswd(userFind.getUserpasswd());
+
+        userRepository.saveAndFlush(userEntity);
+        return userEntity;
     }
 
 }
